@@ -13,6 +13,18 @@ public abstract class AbstractBaseEntity {
         this.id = id;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public boolean isNew() {
+        return id == null;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + ":" + id;

@@ -12,7 +12,9 @@
 </head>
 <body>
 <section>
-    <h3><a href="index.jsp">Home</a> </h3>
+    <form action="index.jsp">
+        <input type="submit" value="Home" />
+    </form>
     <hr/>
 </section>
 <section>
