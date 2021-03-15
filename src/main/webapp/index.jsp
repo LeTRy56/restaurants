@@ -18,5 +18,15 @@
     <hr/>
 </section>
 <h3><a href="srs.jsp">Software Requirements Specification</a> </h3>
+<h3><a href="https://github.com/LeTRy56/restaurants">Source code</a> </h3>
+<p></p>
+<form action="users" method="post">
+    <b>Select user:</b>
+    <select name="userId">
+        <option value="100000">User</option>
+        <option value="100001">Admin</option>
+    </select>
+    <button type="submit">Select</button>
+</form>
 </body>
 </html>

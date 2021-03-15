@@ -18,6 +18,7 @@
     <hr/>
 </section>
 <section>
+    <h3><p>Software Requirements Specification</p></h3>
 <p>Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) <strong>without frontend</strong>.</p>
 <p>The task is:</p>
 <p>Build a voting system for deciding where to have lunch.</p>
