@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: LeTRy
@@ -17,6 +18,34 @@
     </form>
     <hr/>
 </section>
-<h3>Choice of restaurant</h3>
+
+<section>
+    <h3>Choice of restaurant</h3>
+    <a href="restaurants?action=create">Add restaurant</a>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+        <tr>
+            <th>Restaurant</th>
+            <th>Lunch</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <c:forEach items="${restaurants}" var="restaurant">
+            <jsp:useBean id="restaurant" type="ru.letry.restaurants.model.Restaurant"/>
+            <tr>
+<%--                <td rowspan="${restaurant.dishes.size()}">${restaurant.name}</td>--%>
+
+                <c:forEach items="${restaurant.dishes}" var="dish">
+                    <jsp:useBean id="dish" type="ru.letry.restaurants.model.Dish"/>
+                    <tr>
+                        <td>${restaurant.name}</td>
+                        <td>${dish.name}</td>
+                        <td>${dish.price}</td>
+                    </tr>
+                </c:forEach>
+            </tr>
+        </c:forEach>
+    </table>
+</section>
 </body>
 </html>

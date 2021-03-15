@@ -1,6 +1,7 @@
 package ru.letry.restaurants.model;
 
 import org.hibernate.Hibernate;
+import org.springframework.util.Assert;
 
 import java.util.Objects;
 
@@ -14,6 +15,11 @@ public abstract class AbstractBaseEntity {
     }
 
     public Integer getId() {
+        return id;
+    }
+
+    public int id() {
+        Assert.notNull(id, "Entity must have id");
         return id;
     }
 

@@ -2,6 +2,7 @@ package ru.letry.restaurants.web;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.web.restaurant.RestaurantRestController;
 
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class RestaurantServlet extends HttpServlet {
@@ -39,6 +41,10 @@ public class RestaurantServlet extends HttpServlet {
                 resp.sendRedirect("restaurants");
             }
             case "create", "update" -> {
+                final Restaurant restaurant = "create".equals(action) ?
+                        new Restaurant("Restaurant", new HashSet<>()) :
+                        restaurantController.get(getId(req));
+                req.setAttribute("restaurant", restaurant);
                 req.getRequestDispatcher("/restaurantForm.jsp").forward(req, resp);
             }
             default -> {

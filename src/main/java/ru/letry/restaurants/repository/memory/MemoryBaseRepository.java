@@ -34,4 +34,9 @@ public class MemoryBaseRepository<T extends AbstractBaseEntity> {
     Collection<T> getCollection() {
         return map.values();
     }
+
+    void put(T entity) {
+        Objects.requireNonNull(entity, "Entity must not be null");
+        map.put(entity.id(), entity);
+    }
 }
