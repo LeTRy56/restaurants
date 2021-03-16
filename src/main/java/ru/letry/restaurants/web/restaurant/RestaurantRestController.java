@@ -22,32 +22,32 @@ public class RestaurantRestController {
     public Restaurant create(Restaurant restaurant) {
         int userId = SecurityUtil.authUserId();
         //todo validation util checkNew
-        LOG.info("create restaurant {} for user {}", restaurant, userId);
-        return service.create(restaurant, userId);
+        LOG.info("create restaurant {} by user {}", restaurant, userId);
+        return service.create(restaurant);
     }
 
     public Restaurant get(int id) {
         int userId = SecurityUtil.authUserId();
-        LOG.info("delete restaurant {} for user {}", id, userId);
-        return service.get(id, userId);
+        LOG.info("delete restaurant {} by user {}", id, userId);
+        return service.get(id);
     }
 
     public List<Restaurant> getAll() {
         int userId = SecurityUtil.authUserId();
-        LOG.info("getAll for user {}", userId);
-        return service.getAll(userId);
+        LOG.info("getAll by user {}", userId);
+        return service.getAll();
     }
 
     public void update(Restaurant restaurant) {
         int userId = SecurityUtil.authUserId();
-        LOG.info("update restaurant {} for user {}", restaurant, userId);
+        LOG.info("update restaurant {} by user {}", restaurant, userId);
         //todo validation util assureIdConsistent
-        service.update(restaurant, userId);
+        service.update(restaurant);
     }
 
     public void delete(int id) {
         int userId = SecurityUtil.authUserId();
-        LOG.info("delete restaurant {} for user {}", id, userId);
-        service.delete(id, userId);
+        LOG.info("delete restaurant {} by user {}", id, userId);
+        service.delete(id);
     }
 }

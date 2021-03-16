@@ -15,29 +15,29 @@ public class RestaurantService {
         this.repository = repository;
     }
 
-    public Restaurant create(Restaurant restaurant, int userId) {
+    public Restaurant create(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        return repository.save(restaurant, userId);
+        return repository.save(restaurant);
     }
 
-    public Restaurant get(int id, int userId) {
+    public Restaurant get(int id) {
         //todo validationUtil
-        return repository.get(id, userId);
+        return repository.get(id);
     }
 
-    public void update(Restaurant restaurant, int userId) {
+    public void update(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
         //todo validationUtil
-        repository.save(restaurant, userId);
+        repository.save(restaurant);
     }
 
-    public void delete(int id, int userId) {
+    public void delete(int id) {
         //todo validationUtil
-        repository.delete(id, userId);
+        repository.delete(id);
     }
 
-    public List<Restaurant> getAll(int userId) {
-        return repository.getAll(userId);
+    public List<Restaurant> getAll() {
+        return repository.getAll();
     }
 
 }

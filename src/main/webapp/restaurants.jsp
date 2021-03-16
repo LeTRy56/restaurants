@@ -22,30 +22,28 @@
 <section>
     <h3>Choice of restaurant</h3>
     <a href="restaurants?action=create">Add restaurant</a>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-        <tr>
-            <th>Restaurant</th>
-            <th>Lunch</th>
-            <th>Price</th>
-        </tr>
-        </thead>
-        <c:forEach items="${restaurants}" var="restaurant">
-            <jsp:useBean id="restaurant" type="ru.letry.restaurants.model.Restaurant"/>
+    <br>
+    <c:forEach items="${restaurants}" var="restaurant">
+        <jsp:useBean id="restaurant" type="ru.letry.restaurants.model.Restaurant"/>
+        <%--                <td rowspan="${restaurant.dishes.size()}">${restaurant.name}</td>--%>
+        <p></p>
+        ${restaurant.name}
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
             <tr>
-<%--                <td rowspan="${restaurant.dishes.size()}">${restaurant.name}</td>--%>
-
-                <c:forEach items="${restaurant.dishes}" var="dish">
-                    <jsp:useBean id="dish" type="ru.letry.restaurants.model.Dish"/>
-                    <tr>
-                        <td>${restaurant.name}</td>
-                        <td>${dish.name}</td>
-                        <td>${dish.price}</td>
-                    </tr>
-                </c:forEach>
+                <th>Lunch</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+        <c:forEach items="${restaurant.dishes}" var="dish">
+            <jsp:useBean id="dish" type="ru.letry.restaurants.model.Dish"/>
+            <tr>
+                <td>${dish.name}</td>
+                <td>${dish.price}</td>
             </tr>
         </c:forEach>
-    </table>
+        </table>
+    </c:forEach>
 </section>
 </body>
 </html>

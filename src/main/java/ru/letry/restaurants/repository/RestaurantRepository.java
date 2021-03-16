@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface RestaurantRepository {
     //null if not found, when updated
-    Restaurant save(Restaurant restaurant, int userId);
+    Restaurant save(Restaurant restaurant);
 
     // false if not found
-    boolean delete(int id, int userId);
+    boolean delete(int id);
 
     // null if not found
-    Restaurant get(int id, int userId);
+    Restaurant get(int id);
 
-    List<Restaurant> getAll(int userId);
+    List<Restaurant> getAll();
 }
