@@ -23,7 +23,7 @@ public class RestaurantRestController {
         int userId = SecurityUtil.authUserId();
         //todo validation util checkNew
         LOG.info("create restaurant {} by user {}", restaurant, userId);
-        return service.create(restaurant);
+        return service.create(restaurant, userId);
     }
 
     public Restaurant get(int id) {
@@ -42,12 +42,12 @@ public class RestaurantRestController {
         int userId = SecurityUtil.authUserId();
         LOG.info("update restaurant {} by user {}", restaurant, userId);
         //todo validation util assureIdConsistent
-        service.update(restaurant);
+        service.update(restaurant, userId);
     }
 
     public void delete(int id) {
         int userId = SecurityUtil.authUserId();
         LOG.info("delete restaurant {} by user {}", id, userId);
-        service.delete(id);
+        service.delete(id, userId);
     }
 }

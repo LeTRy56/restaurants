@@ -5,5 +5,5 @@
 
     <context:component-scan base-package="ru.letry.**.service"/>
     <context:component-scan base-package="ru.letry.**.web"/>
-    <context:component-scan base-package="ru.letry.**.memory"/>
+<!--    <context:component-scan base-package="ru.letry.**.memory"/>-->
 </beans>

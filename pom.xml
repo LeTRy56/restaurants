@@ -20,7 +20,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <spring.version>5.3.4</spring.version>
-<!--        <tomcat.version>9.0.43</tomcat.version>-->
+        <tomcat.version>9.0.43</tomcat.version>
 
         <!--Logging-->
         <logback.version>1.2.3</logback.version>
@@ -86,6 +86,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
         <!--ORM-->
         <dependency>
@@ -150,10 +155,36 @@
             <scope>test</scope>
         </dependency>
 
+
+
     </dependencies>
 
     <profiles>
-
+        <profile>
+            <id>postgresql</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                    <version>${postgresql.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-jdbc</artifactId>
+                    <version>${tomcat.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jul-to-slf4j</artifactId>
+                    <version>${slf4j.version}</version>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
     </profiles>
 
     <dependencyManagement>

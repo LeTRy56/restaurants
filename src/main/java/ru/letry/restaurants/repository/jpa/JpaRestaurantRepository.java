@@ -1,6 +1,7 @@
 package ru.letry.restaurants.repository.jpa;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.repository.RestaurantRepository;
 
@@ -9,12 +10,14 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+//@Transactional(readOnly = true)
 public class JpaRestaurantRepository implements RestaurantRepository {
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
+//    @Transactional
     public Restaurant save(Restaurant restaurant) {
         if (restaurant.isNew()) {
             em.persist(restaurant);
@@ -25,8 +28,11 @@ public class JpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
+//    @Transactional
     public boolean delete(int id) {
-        return false;
+        return em.createNamedQuery(Restaurant.DELETE)
+                .setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override
@@ -36,6 +42,7 @@ public class JpaRestaurantRepository implements RestaurantRepository {
 
     @Override
     public List<Restaurant> getAll() {
-        return null;
+        return em.createNamedQuery(Restaurant.ALL_SORTED, Restaurant.class)
+                .getResultList();
     }
 }

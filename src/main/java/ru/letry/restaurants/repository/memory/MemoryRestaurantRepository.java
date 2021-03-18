@@ -7,6 +7,7 @@ import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.repository.RestaurantRepository;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,8 +16,8 @@ public class MemoryRestaurantRepository extends MemoryBaseRepository<Restaurant>
     private static final Logger LOG = LoggerFactory.getLogger(MemoryRestaurantRepository.class);
 
     {
-        put(new Restaurant(100, "First restaurant", Set.of(new Dish(10, "Dish 1", 45d), new Dish(11, "Dish 2", 55d))));
-        put(new Restaurant(101, "Second restaurant", Set.of(new Dish(12, "Dish 3", 35d), new Dish(13, "Dish 4", 25d))));
+        put(new Restaurant(100, "First restaurant", Set.of(new Dish(10, "Dish 1", BigDecimal.valueOf(45d)), new Dish(11, "Dish 2", BigDecimal.valueOf(55d)))));
+        put(new Restaurant(101, "Second restaurant", Set.of(new Dish(12, "Dish 3", BigDecimal.valueOf(35d)), new Dish(13, "Dish 4", BigDecimal.valueOf(25d)))));
     }
 
     @Override
