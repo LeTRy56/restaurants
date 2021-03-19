@@ -1,6 +1,7 @@
 package ru.letry.restaurants.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.model.Role;
@@ -9,6 +10,8 @@ import ru.letry.restaurants.repository.RestaurantRepository;
 import ru.letry.restaurants.repository.UserRepository;
 
 import java.util.List;
+
+import static ru.letry.restaurants.util.ValidationUtil.*;
 
 @Service
 public class RestaurantService {
@@ -22,27 +25,29 @@ public class RestaurantService {
 
     public Restaurant create(Restaurant restaurant, int userId) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        //todo validationUtil
-        //todo: throw exception?
+        //todo: throw exception if not admin?
         return getUser(userId).getRoles().contains(Role.ADMIN) ? repository.save(restaurant) : null;
     }
 
     public Restaurant get(int id) {
-        //todo validationUtil
-        return repository.get(id);
+        return checkNotFoundWithId(repository.get(id), id);
     }
 
+//    @Transactional
     public void update(Restaurant restaurant, int userId) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        //todo validationUtil
         if (getUser(userId).getRoles().contains(Role.ADMIN)) {
-            repository.save(restaurant);
+            //http 500 - throws exception when create restaurant with not unique name or update because exists unique index "restaurants_unique_name_idx"
+            //so need delete before save
+//            delete(restaurant.id(), userId);
+            checkNotFoundWithId(repository.save(restaurant), restaurant.id());
         }
     }
 
     public void delete(int id, int userId) {
-        //todo validationUtil
-        repository.delete(id);
+        if (getUser(userId).getRoles().contains(Role.ADMIN)) {
+            checkNotFoundWithId(repository.delete(id), id);
+        }
     }
 
     public List<Restaurant> getAll() {
@@ -50,7 +55,7 @@ public class RestaurantService {
     }
 
     private User getUser(int userId) {
-        return userRepository.get(userId);
+        return checkNotFoundWithId(userRepository.get(userId), userId);
     }
 
 }

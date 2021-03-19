@@ -10,14 +10,14 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-//@Transactional(readOnly = true)
+@Transactional(readOnly = true)
 public class JpaRestaurantRepository implements RestaurantRepository {
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
-//    @Transactional
+    @Transactional
     public Restaurant save(Restaurant restaurant) {
         if (restaurant.isNew()) {
             em.persist(restaurant);
@@ -28,7 +28,7 @@ public class JpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-//    @Transactional
+    @Transactional
     public boolean delete(int id) {
         return em.createNamedQuery(Restaurant.DELETE)
                 .setParameter("id", id)

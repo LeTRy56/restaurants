@@ -28,6 +28,8 @@
         <%--                <td rowspan="${restaurant.dishes.size()}">${restaurant.name}</td>--%>
         <p></p>
         ${restaurant.name}
+        <a href="restaurants?action=update&restaurantId=${restaurant.id}">Update</a>
+        <a href="restaurants?action=delete&restaurantId=${restaurant.id}">Delete</a>
         <table border="1" cellpadding="8" cellspacing="0">
             <thead>
             <tr>

@@ -2,6 +2,8 @@ package ru.letry.restaurants.web;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.util.StringUtils;
+import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.web.restaurant.RestaurantRestController;
 
@@ -10,8 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class RestaurantServlet extends HttpServlet {
     private ConfigurableApplicationContext springContext;
@@ -56,11 +60,31 @@ public class RestaurantServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        req.setCharacterEncoding("UTF-8");
+        Restaurant restaurant = new Restaurant(
+                req.getParameter("restaurantName"),
+                //todo
+                Collections.emptySet());
+
+//        Set<Dish> dishes = new HashSet<>();
+//        req.getParameterMap().forEach((k, v) -> {
+//            k.equals("dish name") ? dishes.add(v)
+//        });
+
+
+
+
+        if (StringUtils.hasLength(req.getParameter("restaurantId"))) {
+            restaurant.setId(getId(req));
+            restaurantController.update(restaurant);
+        } else {
+            restaurantController.create(restaurant);
+        }
+        resp.sendRedirect("restaurants");
     }
 
     private int getId(HttpServletRequest request) {
-        String paramId = Objects.requireNonNull(request.getParameter("id"));
+        String paramId = Objects.requireNonNull(request.getParameter("restaurantId"));
         return Integer.parseInt(paramId);
     }
 }

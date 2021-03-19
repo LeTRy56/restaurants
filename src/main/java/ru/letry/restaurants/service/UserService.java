@@ -7,6 +7,9 @@ import ru.letry.restaurants.repository.UserRepository;
 
 import java.util.List;
 
+import static ru.letry.restaurants.util.ValidationUtil.checkNotFound;
+import static ru.letry.restaurants.util.ValidationUtil.checkNotFoundWithId;
+
 @Service
 public class UserService {
     private final UserRepository repository;
@@ -21,26 +24,22 @@ public class UserService {
     }
 
     public User get(int id) {
-        //todo validationUtil
-        return repository.get(id);
+        return checkNotFoundWithId(repository.get(id), id);
     }
 
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
-        //todo validationUtil
-        repository.save(user);
+        checkNotFoundWithId(repository.save(user), user.id());
     }
 
     public void delete(int id) {
-        //todo validationUtil
-        repository.delete(id);
+        checkNotFoundWithId(repository.delete(id), id);
     }
 
 
     public User getByEmail(String email) {
         Assert.notNull(email, "email must be null");
-        //todo validationUtil
-        return repository.getByEmail(email);
+        return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
     public List<User> getAll() {

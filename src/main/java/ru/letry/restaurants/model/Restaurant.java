@@ -13,6 +13,8 @@ import java.util.Set;
         @NamedQuery(name = Restaurant.DELETE, query = "DELETE FROM Restaurant r WHERE r.id=:id")
 })
 @Entity
+//todo http 500 - throws exception when create not unique or update (entity with same name)
+//@Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_idx")})
 @Table(name = "restaurants")
 public class Restaurant extends AbstractNamedEntity {
     public static final String ALL_SORTED = "Restaurant.getAll";
