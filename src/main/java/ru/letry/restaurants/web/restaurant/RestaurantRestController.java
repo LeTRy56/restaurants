@@ -9,6 +9,8 @@ import ru.letry.restaurants.web.SecurityUtil;
 
 import java.util.List;
 
+import static ru.letry.restaurants.util.ValidationUtil.*;
+
 @Controller
 public class RestaurantRestController {
     private static final Logger LOG = LoggerFactory.getLogger(RestaurantRestController.class);
@@ -21,7 +23,7 @@ public class RestaurantRestController {
 
     public Restaurant create(Restaurant restaurant) {
         int userId = SecurityUtil.authUserId();
-        //todo validation util checkNew
+        checkNew(restaurant);
         LOG.info("create restaurant {} by user {}", restaurant, userId);
         return service.create(restaurant, userId);
     }
@@ -38,10 +40,10 @@ public class RestaurantRestController {
         return service.getAll();
     }
 
-    public void update(Restaurant restaurant) {
+    public void update(Restaurant restaurant, int restaurantId) {
         int userId = SecurityUtil.authUserId();
+        assureIdConsistent(restaurant, restaurantId);
         LOG.info("update restaurant {} by user {}", restaurant, userId);
-        //todo validation util assureIdConsistent
         service.update(restaurant, userId);
     }
 

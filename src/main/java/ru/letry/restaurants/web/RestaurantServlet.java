@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RestaurantServlet extends HttpServlet {
     private ConfigurableApplicationContext springContext;
@@ -46,7 +46,10 @@ public class RestaurantServlet extends HttpServlet {
             }
             case "create", "update" -> {
                 final Restaurant restaurant = "create".equals(action) ?
-                        new Restaurant("Restaurant", new HashSet<>()) :
+                        new Restaurant("Restaurant", Set.of(
+                                new Dish("Dish 1", BigDecimal.TEN),
+                                new Dish("Dish 2", BigDecimal.TEN),
+                                new Dish("Dish 3", BigDecimal.TEN))) :
                         restaurantController.get(getId(req));
                 req.setAttribute("restaurant", restaurant);
                 req.getRequestDispatcher("/restaurantForm.jsp").forward(req, resp);
@@ -63,20 +66,31 @@ public class RestaurantServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         Restaurant restaurant = new Restaurant(
                 req.getParameter("restaurantName"),
-                //todo
                 Collections.emptySet());
 
-//        Set<Dish> dishes = new HashSet<>();
-//        req.getParameterMap().forEach((k, v) -> {
-//            k.equals("dish name") ? dishes.add(v)
-//        });
+        Set<Dish> dishes = new HashSet<>();
 
+        Map<String, String[]> map = req.getParameterMap();
 
+        Pattern pattern = Pattern.compile("dishName\\d*", Pattern.CASE_INSENSITIVE);
+        for (Map.Entry<String, String[]> entry : map.entrySet()) {
+            final String key = entry.getKey();
+            Matcher matcher = pattern.matcher(key);
+            if (matcher.find()) {
+                final String dishName = Arrays.stream(entry.getValue()).findFirst().orElse(null);
+                final Integer dishId = Integer.parseInt(key.substring(8));
+                final BigDecimal dishPrice = new BigDecimal(Objects.requireNonNull(
+                        Arrays.stream(map.get("dishPrice" + dishId))
+                                .findFirst()
+                                .orElse(null)));
+                dishes.add(new Dish(dishId, dishName, dishPrice));
+            }
+        }
+        restaurant.setDishes(dishes);
 
 
         if (StringUtils.hasLength(req.getParameter("restaurantId"))) {
-            restaurant.setId(getId(req));
-            restaurantController.update(restaurant);
+            restaurantController.update(restaurant, getId(req));
         } else {
             restaurantController.create(restaurant);
         }

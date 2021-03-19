@@ -20,7 +20,7 @@ public class Restaurant extends AbstractNamedEntity {
     public static final String ALL_SORTED = "Restaurant.getAll";
     public static final String DELETE = "Restaurant.delete";
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Dish> dishes;
 
     protected Restaurant(Integer id, String name) {

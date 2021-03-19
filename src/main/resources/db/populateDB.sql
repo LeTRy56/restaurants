@@ -18,6 +18,6 @@ VALUES ('First restaurant'),
 
 INSERT INTO dishes(name, price, restaurant_id)
 VALUES ('Dish 1', 100.23, 100002),
-       ('Dish 2', 200.6423, 100002),
-       ('Dish 3', 300.6124, 100003),
-       ('Dish 4', 400.457, 100003);
+       ('Dish 2', 200.64, 100002),
+       ('Dish 3', 300.61, 100003),
+       ('Dish 4', 400.45, 100003);

@@ -9,9 +9,16 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
+@NamedQueries({
+        @NamedQuery(name = Dish.DELETE, query = "DELETE FROM Dish d WHERE d.id=:id AND d.restaurant.id=:restaurantId"),
+        @NamedQuery(name = Dish.ALL_SORTED, query = "SELECT d FROM Dish d WHERE d.restaurant.id=:restaurantId ORDER BY d.name ASC")
+})
 @Entity
 @Table(name = "dishes", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "name"}, name = "dishes_unique_restaurant_name_idx")})
 public class Dish extends AbstractNamedEntity {
+    public static final String DELETE = "Dish.delete";
+    public static final String ALL_SORTED = "Dish.getAll";
+
     @Column(name = "price", nullable = false)
     @NotNull
     @DecimalMin("5.0")
@@ -46,5 +53,13 @@ public class Dish extends AbstractNamedEntity {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 }
