@@ -30,7 +30,7 @@ public class RestaurantRestController {
 
     public Restaurant get(int id) {
         int userId = SecurityUtil.authUserId();
-        LOG.info("delete restaurant {} by user {}", id, userId);
+        LOG.info("get restaurant {} by user {}", id, userId);
         return service.get(id);
     }
 

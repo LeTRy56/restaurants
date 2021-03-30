@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 
 public class DishServlet extends HttpServlet {
@@ -38,11 +40,20 @@ public class DishServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
 
         String action = req.getParameter("action");
-//        switch (action == null ? "all" : action) {
-//            case "delete" -> {
-//                int
-//            }
-//        }
+        switch (action == null ? "all" : action) {
+            case "delete" -> {
+                int dishId = getId(req, "dishId");
+                int restaurantId = getId(req, "restaurantId");
+                dishController.delete(dishId, restaurantId);
+                resp.sendRedirect("restaurants");
+
+//                req.setAttribute("action", "Edit restaurant");
+//                req.setAttribute("restaurant", restaurantController.get(restaurantId));
+//                req.removeAttribute("dishId");
+//                req.getRequestDispatcher("/restaurantForm.jsp").forward(req, resp);
+            }
+            default -> resp.sendRedirect("restaurants");
+        }
     }
 
     @Override

@@ -30,7 +30,7 @@ public class DishRestController {
 
     public Dish get(int id, int restaurantId) {
         int userId = SecurityUtil.authUserId();
-        LOG.info("delete dish {} by user {}", id, userId);
+        LOG.info("get dish {} by user {}", id, userId);
         return service.get(id, restaurantId);
     }
 

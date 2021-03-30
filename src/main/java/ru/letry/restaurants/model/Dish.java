@@ -8,6 +8,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @NamedQueries({
         @NamedQuery(name = Dish.DELETE, query = "DELETE FROM Dish d WHERE d.id=:id AND d.restaurant.id=:restaurantId"),
@@ -29,6 +30,8 @@ public class Dish extends AbstractNamedEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
     private Restaurant restaurant;
+
+//    private LocalDate date;
 
     protected Dish(Integer id, String name) {
         super(id, name);
