@@ -24,25 +24,17 @@
     <h3>Choice of restaurant</h3>
     <form method="post" action="restaurants">
         <input type="text" name="restaurantName" value="New restaurant">
-<%--        <input type="hidden" value="${dish.name}" name="dishName${dish.id}" required>--%>
-<%--        <input type="hidden" value="${dish.price}" name="dishPrice${dish.id}" required>--%>
         <button type="submit">Add restaurant</button>
     </form>
-<%--    <a href="restaurants?action=create">Add restaurant</a>--%>
     <br>
     <c:forEach items="${restaurants}" var="restaurant">
-        <jsp:useBean id="restaurant" type="ru.letry.restaurants.model.Restaurant"/>
-        <%--                <td rowspan="${restaurant.dishes.size()}">${restaurant.name}</td>--%>
+        <jsp:useBean id="restaurant" type="ru.letry.restaurants.dto.RestaurantDTO"/>
         <p></p>
-        ${restaurant.name}
-<%--        <form method="get" action="restaurants?action=update&restaurantId=${restaurant.id}">--%>
-<%--            <button type="submit">Update</button>--%>
-<%--        </form>--%>
-<%--        <form method="get" action="restaurants?action=delete&restaurantId=${restaurant.id}">--%>
-<%--            <button type="submit">Delete</button>--%>
-<%--        </form>--%>
+        <h3>${restaurant.name}</h3>
         <a href="restaurants?action=update&restaurantId=${restaurant.id}"><input type="button" value="Update"></a>
         <a href="restaurants?action=delete&restaurantId=${restaurant.id}"><input type="button" value="Delete"></a>
+        <p></p>
+        Votes: ${restaurant.votes}
         <table border="1" cellpadding="8" cellspacing="0">
             <thead>
             <tr>

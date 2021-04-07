@@ -2,7 +2,7 @@ package ru.letry.restaurants.repository;
 
 import ru.letry.restaurants.model.Vote;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface VoteRepository {
@@ -10,7 +10,8 @@ public interface VoteRepository {
     Vote save(Vote vote);
 
     // null if not found
-    Vote get(int userId);
+    Vote getLastUserVote(int userId, LocalDateTime startDate, LocalDateTime endDate);
 
-    List<Vote> getAll(LocalDate date);
+    // ORDERED dateTime desc
+    List<Vote> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate);
 }

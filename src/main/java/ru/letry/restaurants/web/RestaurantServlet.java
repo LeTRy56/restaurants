@@ -5,6 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
 import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
+import ru.letry.restaurants.model.Vote;
 import ru.letry.restaurants.web.restaurant.RestaurantRestController;
 
 import javax.servlet.ServletException;

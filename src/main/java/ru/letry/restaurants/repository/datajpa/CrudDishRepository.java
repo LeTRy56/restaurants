@@ -10,7 +10,6 @@ import ru.letry.restaurants.model.Dish;
 import java.util.List;
 
 public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
-
     @Modifying
     @Transactional
     @Query("DELETE FROM Dish d WHERE d.id=:id AND d.restaurant.id=:restaurantId")

@@ -23,7 +23,6 @@
 <section>
     <h2>${param.action == 'create' ? 'Create restaurant' : 'Edit restaurant'}</h2>
     <jsp:useBean id="restaurant" type="ru.letry.restaurants.model.Restaurant" scope="request"/>
-<%--    <jsp:useBean id="restaurant" type="ru.letry.restaurants.model.Restaurant"/>--%>
     <form method="post" action="dishes">
         <input type="hidden" name="restaurantId" value="${restaurant.id}">
         <button type="submit">Add dish</button>
@@ -39,7 +38,6 @@
                 <dl>
                     <dd><input type="text" name="dishName${dish.id}" value="${dish.name}" minlength="2" maxlength="100" required></dd>
                     <dd><input type="number" name="dishPrice${dish.id}" value="${dish.price}" min="5" max="5000" step=".01" required></dd>
-<%--                    todo delete:--%>
                     <dd><a href="dishes?action=delete&dishId=${dish.id}&restaurantId=${restaurant.id}"><input type="button" value="Delete"></a></dd>
                 </dl>
             </c:forEach>

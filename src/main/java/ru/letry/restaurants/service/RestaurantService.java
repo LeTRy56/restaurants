@@ -41,12 +41,8 @@ public class RestaurantService {
     public void update(Restaurant restaurant, int userId) {
         Assert.notNull(restaurant, "restaurant must not be null");
         if (getUser(userId).getRoles().contains(Role.ADMIN)) {
-            //http 500 - throws exception when create restaurant with not unique name or update because exists unique index "restaurants_unique_name_idx"
-            //so need delete before save
-//            delete(restaurant.id(), userId);
             for (Dish dish : restaurant.getDishes()) {
                 checkNotFoundWithId(dishRepository.save(dish, restaurant.id()), dish.id());
-//                dishRepository.save(dish, restaurant.id());
             }
             checkNotFoundWithId(restaurantRepository.save(restaurant), restaurant.id());
         }
