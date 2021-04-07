@@ -9,9 +9,10 @@ import ru.letry.restaurants.model.Vote;
 import ru.letry.restaurants.service.RestaurantService;
 import ru.letry.restaurants.service.UserService;
 import ru.letry.restaurants.service.VotingService;
-import ru.letry.restaurants.util.RestaurantUtil;
+import ru.letry.restaurants.util.DTOUtil;
 import ru.letry.restaurants.web.SecurityUtil;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class RestaurantRestController {
     public List<RestaurantDTO> getAll() {
         int userId = SecurityUtil.authUserId();
         LOG.info("getAll by user {}", userId);
-        return RestaurantUtil.getDTOs(restaurantService.getAll(), votingService.getResults());
+        return DTOUtil.getRestaurantDTOs(restaurantService.getAll(), votingService.getResults());
     }
 
     public void update(Restaurant restaurant, int restaurantId) {
@@ -71,5 +72,9 @@ public class RestaurantRestController {
                 LocalDateTime.now(),
                 userService.get(userId),
                 restaurantService.get(restaurantId)));
+    }
+
+    public Vote getLastVote(int userId) {
+        return votingService.getLastUserVote(userId, LocalDate.now());
     }
 }

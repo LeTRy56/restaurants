@@ -15,6 +15,9 @@ public class Restaurant extends AbstractNamedEntity {
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
     private Set<Dish> dishes;
 
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
+    private boolean enabled = true;
+
     protected Restaurant(Integer id, String name) {
         super(id, name);
     }
@@ -37,5 +40,13 @@ public class Restaurant extends AbstractNamedEntity {
 
     public void setDishes(Collection<Dish> dishes) {
         this.dishes = CollectionUtils.isEmpty(dishes) ? Collections.emptySet() : new HashSet<>(dishes);
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

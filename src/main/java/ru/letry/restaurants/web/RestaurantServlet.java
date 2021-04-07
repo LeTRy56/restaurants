@@ -6,7 +6,9 @@ import org.springframework.util.StringUtils;
 import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.model.Vote;
+import ru.letry.restaurants.util.DTOUtil;
 import ru.letry.restaurants.web.restaurant.RestaurantRestController;
+import ru.letry.restaurants.web.user.AdminRestController;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,11 +23,13 @@ import java.util.regex.Pattern;
 public class RestaurantServlet extends HttpServlet {
     private ConfigurableApplicationContext springContext;
     private RestaurantRestController restaurantController;
+    private AdminRestController adminRestController;
 
     @Override
     public void init() throws ServletException {
         springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
         restaurantController = springContext.getBean(RestaurantRestController.class);
+        adminRestController = springContext.getBean(AdminRestController.class);
     }
 
     @Override
@@ -55,8 +59,16 @@ public class RestaurantServlet extends HttpServlet {
                 req.setAttribute("restaurant", restaurant);
                 req.getRequestDispatcher("/restaurantForm.jsp").forward(req, resp);
             }
+            case "vote" -> {
+                restaurantController.vote(getId(req));
+                resp.sendRedirect("restaurants");
+            }
             default -> {
                 req.setAttribute("restaurants", restaurantController.getAll());
+                int userId = SecurityUtil.authUserId();
+                req.setAttribute("user", DTOUtil.getUserDTO(
+                        adminRestController.get(userId),
+                        restaurantController.getLastVote(userId)));
                 req.getRequestDispatcher("/restaurants.jsp").forward(req, resp);
             }
         }

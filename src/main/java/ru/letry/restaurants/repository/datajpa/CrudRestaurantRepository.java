@@ -11,6 +11,6 @@ import ru.letry.restaurants.model.Restaurant;
 public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Integer> {
     @Transactional
     @Modifying
-    @Query("DELETE FROM Restaurant r WHERE r.id=:id")
+    @Query("UPDATE Restaurant r SET r.enabled = FALSE WHERE r.id=:id")
     int delete(@Param("id") int id);
 }

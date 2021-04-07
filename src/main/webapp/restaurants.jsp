@@ -22,6 +22,10 @@
 
 <section>
     <h3>Choice of restaurant</h3>
+    <p></p>
+    <jsp:useBean id="user" type="ru.letry.restaurants.dto.UserDTO" scope="request"/>
+    You voted for the restaurant today: ${user.restaurantName}
+    <p></p>
     <form method="post" action="restaurants">
         <input type="text" name="restaurantName" value="New restaurant">
         <button type="submit">Add restaurant</button>
@@ -31,6 +35,7 @@
         <jsp:useBean id="restaurant" type="ru.letry.restaurants.dto.RestaurantDTO"/>
         <p></p>
         <h3>${restaurant.name}</h3>
+        <a href="restaurants?action=vote&restaurantId=${restaurant.id}"><input type="button" value="Vote"></a>
         <a href="restaurants?action=update&restaurantId=${restaurant.id}"><input type="button" value="Update"></a>
         <a href="restaurants?action=delete&restaurantId=${restaurant.id}"><input type="button" value="Delete"></a>
         <p></p>

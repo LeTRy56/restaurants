@@ -6,6 +6,7 @@ import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.repository.RestaurantRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class DataJpaRestaurantRepository implements RestaurantRepository {
@@ -34,6 +35,8 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
 
     @Override
     public List<Restaurant> getAll() {
-        return crudRepository.findAll(SORT_NAME);
+        return crudRepository.findAll(SORT_NAME).stream()
+                .filter(Restaurant::isEnabled)
+                .collect(Collectors.toList());
     }
 }

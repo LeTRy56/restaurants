@@ -8,10 +8,12 @@ import ru.letry.restaurants.repository.RestaurantRepository;
 import ru.letry.restaurants.repository.VoteRepository;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static ru.letry.restaurants.util.MapUtil.*;
 
@@ -24,6 +26,8 @@ public class VotingService {
     //<restaurantId, number of votes>
     private final Map<Integer, Integer> results = new ConcurrentHashMap<>();
 
+    private final static ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+
     public VotingService(VoteRepository repository, RestaurantRepository restaurantRepository) {
         this.repository = repository;
         this.restaurantRepository = restaurantRepository;
@@ -32,6 +36,9 @@ public class VotingService {
     @PostConstruct
     private void init() {
         refresh();
+/*        //for check refreshAtMidnight() (uncomment getRemainSecondsOneDay()):
+        results.put(100003, 4);*/
+        refreshAtMidnight();
     }
 
     private void refresh() {
@@ -53,6 +60,19 @@ public class VotingService {
         for (Vote vote : map.values()) {
             plusVote(vote);
         }
+    }
+
+    private void refreshAtMidnight() {
+        service.scheduleAtFixedRate(this::refresh, getRemainSecondsOneDay(), 60 * 60 * 24, TimeUnit.SECONDS);
+    }
+
+    public long getRemainSecondsOneDay() {
+        ZonedDateTime nowZoned = ZonedDateTime.now();
+        Instant midnight = nowZoned.toLocalDate().atStartOfDay(nowZoned.getZone()).toInstant();
+        Duration duration = Duration.between(midnight, Instant.now());
+/*        //for check refreshAtMidnight() (uncomment in init()):
+        return 30;*/
+        return 60 * 60 * 24 - duration.getSeconds();
     }
 
     private void minusVote(Vote vote) {
