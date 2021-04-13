@@ -1,5 +1,7 @@
 package ru.letry.restaurants.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -27,6 +29,7 @@ public class RestaurantService {
         this.dishRepository = dishRepository;
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant, int userId) {
         Assert.notNull(restaurant, "restaurant must not be null");
         //todo: throw exception if not admin?
@@ -38,6 +41,7 @@ public class RestaurantService {
     }
 
     @Transactional
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void update(Restaurant restaurant, int userId) {
         Assert.notNull(restaurant, "restaurant must not be null");
         if (getUser(userId).getRoles().contains(Role.ADMIN)) {
@@ -48,12 +52,14 @@ public class RestaurantService {
         }
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id, int userId) {
         if (getUser(userId).getRoles().contains(Role.ADMIN)) {
             checkNotFoundWithId(restaurantRepository.delete(id), id);
         }
     }
 
+    @Cacheable("restaurants")
     public List<Restaurant> getAll() {
         return restaurantRepository.getAll();
     }

@@ -1,5 +1,7 @@
 package ru.letry.restaurants.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.letry.restaurants.model.Restaurant;
@@ -19,7 +21,7 @@ import static ru.letry.restaurants.util.MapUtil.*;
 
 @Service
 public class VotingService {
-    private final VoteRepository repository;
+    private final VoteRepository voteRepository;
 
     private final RestaurantRepository restaurantRepository;
 
@@ -28,8 +30,8 @@ public class VotingService {
 
     private final static ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
-    public VotingService(VoteRepository repository, RestaurantRepository restaurantRepository) {
-        this.repository = repository;
+    public VotingService(VoteRepository voteRepository, RestaurantRepository restaurantRepository) {
+        this.voteRepository = voteRepository;
         this.restaurantRepository = restaurantRepository;
     }
 
@@ -89,6 +91,7 @@ public class VotingService {
         results.computeIfPresent(vote.getRestaurant().id(), (key, val) -> val + 1);
     }
 
+    @CacheEvict(value = "results", allEntries = true)
     public Vote vote(Vote vote) {
         Assert.notNull(vote, "vote must not be null");
 
@@ -97,7 +100,7 @@ public class VotingService {
         }
 
         Vote lastVote = getLastUserVote(vote.getUser().id(), vote.getDateTime().toLocalDate());
-        Vote saved = repository.save(vote);
+        Vote saved = voteRepository.save(vote);
 
         if (saved == null) {
             return null;
@@ -109,26 +112,29 @@ public class VotingService {
         return saved;
     }
 
+    @CacheEvict(value = "results", allEntries = true)
     public Restaurant addRestaurant(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
         results.put(restaurant.id(), 0);
         return restaurant;
     }
 
+    @CacheEvict(value = "results", allEntries = true)
     public void deleteRestaurant(int id) {
         results.remove(id);
     }
 
     public Vote getLastUserVote(int userId, LocalDate date) {
         Assert.notNull(date, "date must not be null");
-        return repository.getLastUserVote(userId, date.atStartOfDay(), date.plusDays(1).atStartOfDay());
+        return voteRepository.getLastUserVote(userId, date.atStartOfDay(), date.plusDays(1).atStartOfDay());
     }
 
     private List<Vote> getByDay(LocalDate date) {
         Assert.notNull(date, "date must not be null");
-        return repository.getBetweenHalfOpen(date.atStartOfDay(), date.plusDays(1).atStartOfDay());
+        return voteRepository.getBetweenHalfOpen(date.atStartOfDay(), date.plusDays(1).atStartOfDay());
     }
 
+    @Cacheable("results")
     public Map<Integer, Integer> getResults() {
         return Collections.unmodifiableMap(results);
     }

@@ -26,7 +26,7 @@ public class Dish extends AbstractNamedEntity {
 
     @Column(name = "date_time", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
-    private LocalDate date = LocalDate.now();
+    private final LocalDate date = LocalDate.now();
 
     protected Dish(Integer id, String name) {
         super(id, name);
@@ -59,5 +59,9 @@ public class Dish extends AbstractNamedEntity {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public LocalDate getDate() {
+        return date;
     }
 }
