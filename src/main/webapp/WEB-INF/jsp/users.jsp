@@ -7,16 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <title>Users</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
-<section>
-    <form action="index.jsp">
-        <input type="submit" value="Home" />
-    </form>
-    <hr/>
-</section>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>

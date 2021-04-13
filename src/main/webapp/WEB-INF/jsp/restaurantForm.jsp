@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: LeTRy
@@ -7,28 +6,22 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head>
-    <title>Restaurant</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
-<section>
-    <form action="index.jsp">
-        <input type="submit" value="Home" />
-    </form>
-    <hr/>
-</section>
+<jsp:include page="fragments/bodyHeader.jsp"/>
 
 <section>
     <h2>${param.action == 'create' ? 'Create restaurant' : 'Edit restaurant'}</h2>
     <jsp:useBean id="restaurant" type="ru.letry.restaurants.model.Restaurant" scope="request"/>
-    <form method="post" action="dishes">
+    <form method="post" action="/restaurants/${restaurant.id}/dishes/create">
+<%--    <form method="post" action="/restaurants/${restaurant.id}/dishes">--%>
         <input type="hidden" name="restaurantId" value="${restaurant.id}">
         <button type="submit">Add dish</button>
     </form>
     <form method="post" action="restaurants">
-        <input type="hidden" name="restaurantId" value="${restaurant.id}">
+        <input type="hidden" name="id" value="${restaurant.id}">
         <dt>Restaurant:</dt>
         <dd><label>
             <input type="text" value="${restaurant.name}" name="restaurantName" minlength="2" maxlength="100" required>
@@ -38,7 +31,7 @@
                 <dl>
                     <dd><input type="text" name="dishName${dish.id}" value="${dish.name}" minlength="2" maxlength="100" required></dd>
                     <dd><input type="number" name="dishPrice${dish.id}" value="${dish.price}" min="5" max="5000" step=".01" required></dd>
-                    <dd><a href="dishes?action=delete&dishId=${dish.id}&restaurantId=${restaurant.id}"><input type="button" value="Delete"></a></dd>
+                    <dd><a href="/restaurants/${restaurant.id}/dishes/${dish.id}/delete"><input type="button" value="Delete"></a></dd>
                 </dl>
             </c:forEach>
         <button type="submit">Save</button>
@@ -56,5 +49,7 @@
 <%--        </form>--%>
 
 </section>
+
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>

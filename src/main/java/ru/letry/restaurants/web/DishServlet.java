@@ -5,7 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
 import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.web.dish.DishRestController;
-import ru.letry.restaurants.web.restaurant.RestaurantRestController;
+import ru.letry.restaurants.web.restaurant.RestaurantController;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,20 +13,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Map;
 import java.util.Objects;
 
 public class DishServlet extends HttpServlet {
     private ConfigurableApplicationContext springContext;
     private DishRestController dishController;
-    private RestaurantRestController restaurantController;
+    private RestaurantController restaurantController;
 
     @Override
     public void init() throws ServletException {
         springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
         dishController = springContext.getBean(DishRestController.class);
-        restaurantController = springContext.getBean(RestaurantRestController.class);
+        restaurantController = springContext.getBean(RestaurantController.class);
     }
 
     @Override

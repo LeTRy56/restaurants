@@ -110,6 +110,7 @@ public class VotingService {
     }
 
     public Restaurant addRestaurant(Restaurant restaurant) {
+        Assert.notNull(restaurant, "restaurant must not be null");
         results.put(restaurant.id(), 0);
         return restaurant;
     }

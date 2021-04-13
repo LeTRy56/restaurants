@@ -7,17 +7,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <title>Software Requirements Specification</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
-<section>
-    <form action="index.jsp">
-        <input type="submit" value="Home" />
-    </form>
-    <hr/>
-</section>
+<jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
     <h3><p>Software Requirements Specification</p></h3>
 <p>Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) <strong>without frontend</strong>.</p>
@@ -38,9 +30,9 @@
 </ul>
 <p>Each restaurant provides a new menu each day.</p>
 <p>As a result, provide a link to github repository. It should contain the code, README.md with API documentation and couple curl commands to test it.</p>
-<hr>
 <p>P.S.: Make sure everything works with latest version that is on github :)</p>
 <p>P.P.S.: Assume that your API will be used by a frontend developer to build frontend on top of that.</p>
 </section>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>

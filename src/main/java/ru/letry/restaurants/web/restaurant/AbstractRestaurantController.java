@@ -2,79 +2,94 @@ package ru.letry.restaurants.web.restaurant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.letry.restaurants.dto.RestaurantDTO;
+import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.model.Vote;
+import ru.letry.restaurants.service.DishService;
 import ru.letry.restaurants.service.RestaurantService;
 import ru.letry.restaurants.service.UserService;
 import ru.letry.restaurants.service.VotingService;
 import ru.letry.restaurants.util.DTOUtil;
 import ru.letry.restaurants.web.SecurityUtil;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ru.letry.restaurants.util.ValidationUtil.*;
+import static ru.letry.restaurants.util.ValidationUtil.assureIdConsistent;
+import static ru.letry.restaurants.util.ValidationUtil.checkNew;
 
-@Controller
-public class RestaurantRestController {
-    private static final Logger LOG = LoggerFactory.getLogger(RestaurantRestController.class);
+public abstract class AbstractRestaurantController {
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final RestaurantService restaurantService;
-    private final VotingService votingService;
-    private final UserService userService;
+    @Autowired
+    protected RestaurantService restaurantService;
 
-    public RestaurantRestController(RestaurantService restaurantService, VotingService votingService, UserService userService) {
-        this.restaurantService = restaurantService;
-        this.votingService = votingService;
-        this.userService = userService;
-    }
+    @Autowired
+    protected DishService dishService;
+
+    @Autowired
+    protected VotingService votingService;
+
+    @Autowired
+    protected UserService userService;
 
     public Restaurant create(Restaurant restaurant) {
         int userId = SecurityUtil.authUserId();
         checkNew(restaurant);
-        LOG.info("create restaurant {} by user {}", restaurant, userId);
+        log.info("create restaurant {} by user {}", restaurant, userId);
         return votingService.addRestaurant(restaurantService.create(restaurant, userId));
     }
 
     public Restaurant get(int id) {
         int userId = SecurityUtil.authUserId();
-        LOG.info("get restaurant {} by user {}", id, userId);
+        log.info("get restaurant {} by user {}", id, userId);
         return restaurantService.get(id);
     }
 
     public List<RestaurantDTO> getAll() {
         int userId = SecurityUtil.authUserId();
-        LOG.info("getAll by user {}", userId);
+        log.info("getAll by user {}", userId);
         return DTOUtil.getRestaurantDTOs(restaurantService.getAll(), votingService.getResults());
     }
 
     public void update(Restaurant restaurant, int restaurantId) {
         int userId = SecurityUtil.authUserId();
         assureIdConsistent(restaurant, restaurantId);
-        LOG.info("update restaurant {} by user {}", restaurant, userId);
+        log.info("update restaurant {} by user {}", restaurant, userId);
         restaurantService.update(restaurant, userId);
     }
 
     public void delete(int id) {
         int userId = SecurityUtil.authUserId();
-        LOG.info("delete restaurant {} by user {}", id, userId);
+        log.info("delete restaurant {} by user {}", id, userId);
         restaurantService.delete(id, userId);
         votingService.deleteRestaurant(id);
     }
 
-    public Vote vote(int restaurantId) {
+    public Vote voteRestaurant(int restaurantId) {
         int userId = SecurityUtil.authUserId();
-        LOG.info("vote for restaurant {} by user {}", restaurantId, userId);
+        log.info("vote for restaurant {} by user {}", restaurantId, userId);
         return votingService.vote(new Vote(
                 LocalDateTime.now(),
                 userService.get(userId),
                 restaurantService.get(restaurantId)));
     }
 
-    public Vote getLastVote(int userId) {
-        return votingService.getLastUserVote(userId, LocalDate.now());
+    public void deleteDish(int id, int restaurantId) {
+        int userId = SecurityUtil.authUserId();
+        log.info("delete dish {} for restaurant {} by user {}", id, restaurantId, userId);
+        dishService.delete(id, restaurantId, userId);
     }
+
+    public Dish createDish(Dish dish, int restaurantId) {
+        int userId = SecurityUtil.authUserId();
+        log.info("create dish for restaurant {} by user {}", restaurantId, userId);
+        return dishService.create(dish, restaurantId, userId);
+    }
+
+//    public Vote getLastVote(int userId) {
+//        return votingService.getLastUserVote(userId, LocalDate.now());
+//    }
 }
