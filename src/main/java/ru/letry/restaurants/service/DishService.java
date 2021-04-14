@@ -25,7 +25,6 @@ public class DishService {
 
     public Dish create(Dish dish, int restaurantId, int userId) {
         Assert.notNull(dish, "restaurant must not be null");
-        //todo: throw exception if not admin?
         return getUser(userId).getRoles().contains(Role.ADMIN) ? dishRepository.save(dish, restaurantId) : null;
     }
 

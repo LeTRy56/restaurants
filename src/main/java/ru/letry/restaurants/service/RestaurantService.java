@@ -32,7 +32,6 @@ public class RestaurantService {
     @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant, int userId) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        //todo: throw exception if not admin?
         return getUser(userId).getRoles().contains(Role.ADMIN) ? restaurantRepository.save(restaurant) : null;
     }
 

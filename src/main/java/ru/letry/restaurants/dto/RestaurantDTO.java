@@ -2,6 +2,7 @@ package ru.letry.restaurants.dto;
 
 import ru.letry.restaurants.model.Dish;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class RestaurantDTO {
@@ -34,6 +35,22 @@ public class RestaurantDTO {
 
     public int getVotes() {
         return votes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RestaurantDTO that = (RestaurantDTO) o;
+        return votes == that.votes &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(dishes, that.dishes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, dishes, votes);
     }
 
     @Override
