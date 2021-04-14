@@ -28,18 +28,6 @@ public class JspRestaurantController extends AbstractRestaurantController {
         return "restaurantForm";
     }
 
-    @GetMapping("/{id}/update")
-    public String update(@PathVariable int id, Model model) {
-        model.addAttribute("restaurant", super.get(id));
-        return "restaurantForm";
-    }
-
-    @GetMapping("/{id}/delete")
-    public String delete(@PathVariable int id, HttpServletRequest request) {
-        super.delete(id);
-        return "redirect:/restaurants";
-    }
-
     @PostMapping
     public String createOrUpdate(HttpServletRequest request) {
         Restaurant restaurant = new Restaurant(
@@ -75,24 +63,35 @@ public class JspRestaurantController extends AbstractRestaurantController {
         return "redirect:/restaurants";
     }
 
+    @GetMapping("/{id}/update")
+    public String update(@PathVariable int id, Model model) {
+        model.addAttribute("restaurant", super.get(id));
+        return "restaurantForm";
+    }
+
+    @GetMapping("/{id}/delete")
+    public String delete(@PathVariable int id, HttpServletRequest request) {
+        super.delete(id);
+        return "redirect:/restaurants";
+    }
+
     @PostMapping("/{id}/vote")
     public String vote(@PathVariable int id) {
         super.voteRestaurant(id);
         return "redirect:/restaurants";
     }
 
-    @GetMapping("/{restaurantId}/dishes/{dishId}/delete")
-    public String dishDelete(@PathVariable int restaurantId, @PathVariable int dishId, Model model) {
-        super.deleteDish(dishId, restaurantId);
-        model.addAttribute("restaurant", restaurantService.get(restaurantId));
-//        return "redirect:/restaurants";
-        return "restaurantForm";
-    }
-
     @PostMapping("/{restaurantId}/dishes/create")
     public String dishCreate(@PathVariable int restaurantId, Model model) {
         //todo new controller for /dishes?
         super.createDish(new Dish("Dish", BigDecimal.TEN), restaurantId);
+        model.addAttribute("restaurant", restaurantService.get(restaurantId));
+        return "restaurantForm";
+    }
+
+    @GetMapping("/{restaurantId}/dishes/{dishId}/delete")
+    public String dishDelete(@PathVariable int restaurantId, @PathVariable int dishId, Model model) {
+        super.deleteDish(dishId, restaurantId);
         model.addAttribute("restaurant", restaurantService.get(restaurantId));
         return "restaurantForm";
     }
