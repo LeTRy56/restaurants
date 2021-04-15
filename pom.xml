@@ -7,7 +7,7 @@
     <groupId>ru.letry</groupId>
     <artifactId>restaurants</artifactId>
     <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0</version>
 
     <name>Choice of restaurant</name>
     <url>https://restaurants.letry.ru/</url>
@@ -46,7 +46,7 @@
     </properties>
 
     <build>
-        <finalName>restaurants</finalName>
+        <finalName>${project.artifactId}##${project.version}</finalName>
         <defaultGoal>package</defaultGoal>
         <plugins>
             <plugin>
