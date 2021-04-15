@@ -1,5 +1,7 @@
 package ru.letry.restaurants.web.restaurant;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,9 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
+import ru.letry.restaurants.util.DTOUtil;
+import ru.letry.restaurants.web.SecurityUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +23,23 @@ import java.util.regex.Pattern;
 @Controller
 @RequestMapping("/restaurants")
 public class JspRestaurantController extends AbstractRestaurantController {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @GetMapping
+    public String getRestaurants(Model model) {
+        int userId = SecurityUtil.authUserId();
+        log.info("getAll by user {}", userId);
+
+        model.addAttribute("restaurants",
+                DTOUtil.getRestaurantDTOs(restaurantService.getAll(), votingService.getResults()));
+
+        model.addAttribute("user", DTOUtil.getUserDTO(
+                userService.get(userId),
+                votingService.getLastUserVote(userId, LocalDate.now())
+        ));
+        return "restaurants";
+    }
 
     @GetMapping("/create")
     public String create(Model model) {

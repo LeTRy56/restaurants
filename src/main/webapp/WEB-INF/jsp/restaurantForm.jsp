@@ -16,7 +16,7 @@
     <h2>${param.action == 'create' ? 'Create restaurant' : 'Edit restaurant'}</h2>
     <jsp:useBean id="restaurant" type="ru.letry.restaurants.model.Restaurant" scope="request"/>
     <a href="/restaurants/${restaurant.id}/dishes/create"><input type="button" value="Add dish"></a>
-    <form method="post" action="restaurants">
+    <form method="post" action="/restaurants">
         <input type="hidden" name="id" value="${restaurant.id}">
         <dt>Restaurant:</dt>
         <dd><label>
@@ -25,13 +25,19 @@
             <c:forEach items="${restaurant.dishes}" var="dish">
                 <jsp:useBean id="dish" type="ru.letry.restaurants.model.Dish"/>
                 <dl>
-                    <dd><input type="text" name="dishName${dish.id}" value="${dish.name}" minlength="2" maxlength="100" required></dd>
-                    <dd><input type="number" name="dishPrice${dish.id}" value="${dish.price}" min="5" max="5000" step=".01" required></dd>
-                    <dd><a href="/restaurants/${restaurant.id}/dishes/${dish.id}/delete"><input type="button" value="Delete"></a></dd>
+                    <dd>
+                        <label>
+                            <input type="text" name="dishName${dish.id}" value="${dish.name}" minlength="2" maxlength="100" required>
+                        </label>
+                        <label>
+                            <input type="number" name="dishPrice${dish.id}" value="${dish.price}" min="5" max="5000" step=".01" required>
+                        </label>
+                        <a href="/restaurants/${restaurant.id}/dishes/${dish.id}/delete"><input type="button" value="Delete"></a>
+                    </dd>
                 </dl>
             </c:forEach>
         <button type="submit">Save</button>
-        <a href="restaurants"><input type="button" value="Cancel"></a>
+        <a href="/restaurants"><input type="button" value="Cancel"></a>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
