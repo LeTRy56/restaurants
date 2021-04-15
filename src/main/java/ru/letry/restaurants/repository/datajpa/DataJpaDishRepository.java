@@ -1,16 +1,25 @@
 package ru.letry.restaurants.repository.datajpa;
 
+import org.hibernate.Cache;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.letry.restaurants.model.Dish;
+import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.repository.DishRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 public class DataJpaDishRepository implements DishRepository {
     private final CrudDishRepository crudDishRepository;
     private final CrudRestaurantRepository restaurantRepository;
+
+    @PersistenceContext
+    private EntityManager em;
 
     public DataJpaDishRepository(CrudDishRepository crudDishRepository, CrudRestaurantRepository restaurantRepository) {
         this.crudDishRepository = crudDishRepository;
@@ -24,7 +33,9 @@ public class DataJpaDishRepository implements DishRepository {
             return null;
         }
         dish.setRestaurant(restaurantRepository.getOne(restaurantId));
-        return crudDishRepository.save(dish);
+        Dish saved = crudDishRepository.save(dish);
+        clearCache(restaurantId);
+        return saved;
     }
 
     @Override
@@ -42,5 +53,13 @@ public class DataJpaDishRepository implements DishRepository {
     @Override
     public List<Dish> getAll(int restaurantId) {
         return crudDishRepository.getAll(restaurantId);
+    }
+
+    private void clearCache(int restaurantId) {
+        //invalidate Hibernate 2nd level cache Restaurant entity:
+        Session session = em.unwrap(Session.class);
+        SessionFactory sessionFactory = session.getSessionFactory();
+        Cache cache = sessionFactory.getCache();
+        cache.evictEntityData(Restaurant.class, restaurantId);
     }
 }

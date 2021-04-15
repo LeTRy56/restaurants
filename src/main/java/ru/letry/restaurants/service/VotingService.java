@@ -136,7 +136,7 @@ public class VotingService {
 
     @Cacheable("results")
     public Map<Integer, Integer> getResults() {
-        return Collections.unmodifiableMap(results);
+        return Map.copyOf(results);
     }
 
     public Map<Integer, Integer> getSortedResults() {

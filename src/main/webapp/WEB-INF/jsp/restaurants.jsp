@@ -22,34 +22,38 @@
         <button type="submit">Add restaurant</button>
     </form>
     <br>
-    <c:forEach items="${restaurants}" var="restaurant">
-        <jsp:useBean id="restaurant" type="ru.letry.restaurants.dto.RestaurantDTO" />
-        <p></p>
-        <h3>${restaurant.name}</h3>
-        <form method="post" action="${pageContext.request.contextPath}/restaurants/${restaurant.id}/vote">
-            <button type="submit">Vote</button>
-        </form>
-<%--        <a href="restaurants?action=vote&restaurantId=${restaurant.id}"><input type="button" value="Vote"></a>--%>
-        <a href="restaurants/${restaurant.id}/update"><input type="button" value="Update"></a>
-        <a href="restaurants/${restaurant.id}/delete"><input type="button" value="Delete"></a>
-        <p></p>
-        Votes: ${restaurant.votes}
+
         <table border="1" cellpadding="8" cellspacing="0">
             <thead>
             <tr>
-                <th>Lunch</th>
-                <th>Price</th>
+                <th>Restaurant</th>
+                <th>Lunch | Price</th>
+                <th>Votes</th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
-        <c:forEach items="${restaurant.dishes}" var="dish">
-            <jsp:useBean id="dish" type="ru.letry.restaurants.model.Dish"/>
+
+            <c:forEach items="${restaurants}" var="restaurant">
+            <jsp:useBean id="restaurant" type="ru.letry.restaurants.dto.RestaurantDTO" />
+
             <tr>
-                <td>${dish.name}</td>
-                <td>${dish.price}</td>
+                <th>${restaurant.name}</th>
+                <th>
+                    <c:forEach items="${restaurant.dishes}" var="dish">
+                        <jsp:useBean id="dish" type="ru.letry.restaurants.model.Dish"/>
+                        ${dish.name} | ${dish.price}
+                        <p></p>
+                    </c:forEach>
+                </th>
+                <th>${restaurant.votes}</th>
+                <th><a href="restaurants/${restaurant.id}/vote"><input type="button" value="Vote"></a></th>
+                <th><a href="restaurants/${restaurant.id}/update"><input type="button" value="Update"></a></th>
+                <th><a href="restaurants/${restaurant.id}/delete"><input type="button" value="Delete"></a></th>
             </tr>
-        </c:forEach>
+            </c:forEach>
         </table>
-    </c:forEach>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

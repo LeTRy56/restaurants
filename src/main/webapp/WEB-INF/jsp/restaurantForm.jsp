@@ -15,11 +15,7 @@
 <section>
     <h2>${param.action == 'create' ? 'Create restaurant' : 'Edit restaurant'}</h2>
     <jsp:useBean id="restaurant" type="ru.letry.restaurants.model.Restaurant" scope="request"/>
-    <form method="post" action="/restaurants/${restaurant.id}/dishes/create">
-<%--    <form method="post" action="/restaurants/${restaurant.id}/dishes">--%>
-        <input type="hidden" name="restaurantId" value="${restaurant.id}">
-        <button type="submit">Add dish</button>
-    </form>
+    <a href="/restaurants/${restaurant.id}/dishes/create"><input type="button" value="Add dish"></a>
     <form method="post" action="restaurants">
         <input type="hidden" name="id" value="${restaurant.id}">
         <dt>Restaurant:</dt>
@@ -36,20 +32,8 @@
             </c:forEach>
         <button type="submit">Save</button>
         <a href="restaurants"><input type="button" value="Cancel"></a>
-<%--        <button onclick="window.history.back()" type="button">Cancel</button>--%>
     </form>
-<%--    <h4>Dish: Price:</h4>--%>
-<%--        <form method="post" >--%>
-<%--            <input type="hidden" name="dishId" value="${dish.id}">--%>
-<%--            <dl>--%>
-<%--                <dd><input type="text" value="${dish.name}" name="dishName${dish.id}" required></dd>--%>
-<%--                <dd><input type="number" value="${dish.price}" name="dishPrice${dish.id}" required></dd>--%>
-<%--                <button type="submit">Save</button>--%>
-<%--            </dl>--%>
-<%--        </form>--%>
-
 </section>
-
 <jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>

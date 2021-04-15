@@ -75,13 +75,13 @@ public class JspRestaurantController extends AbstractRestaurantController {
         return "redirect:/restaurants";
     }
 
-    @PostMapping("/{id}/vote")
+    @GetMapping("/{id}/vote")
     public String vote(@PathVariable int id) {
         super.voteRestaurant(id);
         return "redirect:/restaurants";
     }
 
-    @PostMapping("/{restaurantId}/dishes/create")
+    @GetMapping("/{restaurantId}/dishes/create")
     public String dishCreate(@PathVariable int restaurantId, Model model) {
         //todo new controller for /dishes?
         super.createDish(new Dish("Dish", BigDecimal.TEN), restaurantId);
