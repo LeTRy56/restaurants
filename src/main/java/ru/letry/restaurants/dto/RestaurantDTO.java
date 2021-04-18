@@ -5,10 +5,7 @@ import ru.letry.restaurants.model.Dish;
 import java.util.Objects;
 import java.util.Set;
 
-public class RestaurantDTO {
-    private final Integer id;
-
-    private final String name;
+public class RestaurantDTO extends BaseDTO {
 
     private final Set<Dish> dishes;
 
@@ -19,14 +16,6 @@ public class RestaurantDTO {
         this.name = name;
         this.dishes = dishes;
         this.votes = votes;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Set<Dish> getDishes() {

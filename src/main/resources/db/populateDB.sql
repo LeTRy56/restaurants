@@ -6,7 +6,7 @@ ALTER SEQUENCE global_seq RESTART WITH 100000;
 
 INSERT INTO users(name, email, password)
 VALUES ('User', 'user@domain.com', 'password'),
-       ('Admin', 'admin@doman.com', 'admin');
+       ('Admin', 'admin@domain.com', 'admin');
 
 INSERT INTO user_roles(role, user_id)
 VALUES ('USER', 100000),

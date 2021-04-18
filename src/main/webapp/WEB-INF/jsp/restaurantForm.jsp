@@ -37,7 +37,7 @@
                 </dl>
             </c:forEach>
         <button type="submit">Save</button>
-        <a href="/admin/restaurants"><input type="button" value="Cancel"></a>
+        <a href="/restaurants"><input type="button" value="Cancel"></a>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

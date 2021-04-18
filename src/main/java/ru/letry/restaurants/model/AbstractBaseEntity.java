@@ -2,6 +2,7 @@ package ru.letry.restaurants.model;
 
 import org.hibernate.Hibernate;
 import org.springframework.util.Assert;
+import ru.letry.restaurants.HasId;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import java.util.Objects;
 @MappedSuperclass
 // http://stackoverflow.com/questions/594597/hibernate-annotations-which-is-better-field-or-property-access
 @Access(AccessType.FIELD)
-public abstract class AbstractBaseEntity {
+public abstract class AbstractBaseEntity implements HasId {
     public static final int START_SEQ = 100000;
 
     @Id
@@ -22,23 +23,6 @@ public abstract class AbstractBaseEntity {
 
     protected AbstractBaseEntity(Integer id) {
         this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public int id() {
-        Assert.notNull(id, "Entity must have id");
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public boolean isNew() {
-        return id == null;
     }
 
     @Override
@@ -57,5 +41,15 @@ public abstract class AbstractBaseEntity {
     @Override
     public int hashCode() {
         return id == null ? 0 : id;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
