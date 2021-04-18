@@ -18,9 +18,6 @@ public class DTOUtil {
         Assert.notNull(restaurants, "restaurants must not be null");
         Assert.notNull(results, "results must not be null");
         List<RestaurantDTO> restaurantDTOs = new ArrayList<>();
-        //for find bug IllegalArgumentException: votes must not be null:
-        LOG.info("Collection<Restaurant> restaurants = {}", restaurants);
-        LOG.info("results = {}", results);
         for (Restaurant restaurant : restaurants) {
             restaurantDTOs.add(createRestaurantDTO(restaurant, results.get(restaurant.id())));
         }

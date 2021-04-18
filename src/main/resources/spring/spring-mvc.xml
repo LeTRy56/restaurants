@@ -8,6 +8,9 @@
 
 <!--    <mvc:annotation-driven/>-->
 
+    <!-- serve static resources (*.html, ...) from src/main/webapp/ -->
+    <mvc:default-servlet-handler/>
+
 <!--    For tests: Proxy of ObjectMapper:    -->
     <mvc:annotation-driven>
         <mvc:message-converters>

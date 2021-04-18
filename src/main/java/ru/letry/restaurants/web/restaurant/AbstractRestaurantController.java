@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.letry.restaurants.dto.RestaurantDTO;
+import ru.letry.restaurants.dto.UserDTO;
 import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.model.Vote;
@@ -14,6 +15,7 @@ import ru.letry.restaurants.service.VotingService;
 import ru.letry.restaurants.util.DTOUtil;
 import ru.letry.restaurants.web.SecurityUtil;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,6 +47,14 @@ public abstract class AbstractRestaurantController {
         int userId = SecurityUtil.authUserId();
         log.info("get restaurant {} by user {}", id, userId);
         return restaurantService.get(id);
+    }
+
+    public UserDTO getUser() {
+        int userId = SecurityUtil.authUserId();
+        return DTOUtil.getUserDTO(
+                userService.get(userId),
+                votingService.getLastUserVote(userId, LocalDate.now())
+        );
     }
 
     public Restaurant create(Restaurant restaurant) {

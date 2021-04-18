@@ -9,5 +9,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <footer>
     <hr>
-    <a href="srs">Software Requirements Specification</a> | <a href="https://github.com/LeTRy56/restaurants">Source code</a>
+    <a href="/srs">Software Requirements Specification</a> | <a href="https://github.com/LeTRy56/restaurants">Source code</a>
 </footer>

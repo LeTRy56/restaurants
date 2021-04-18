@@ -1,5 +1,6 @@
 package ru.letry.restaurants.service;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.letry.restaurants.model.Dish;

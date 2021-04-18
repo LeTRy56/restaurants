@@ -1,7 +1,5 @@
 package ru.letry.restaurants.service;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.letry.restaurants.model.Restaurant;
@@ -11,13 +9,16 @@ import ru.letry.restaurants.repository.VoteRepository;
 
 import javax.annotation.PostConstruct;
 import java.time.*;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static ru.letry.restaurants.util.MapUtil.*;
+import static ru.letry.restaurants.util.MapUtil.sortByValue;
 
 @Service
 public class VotingService {
@@ -91,12 +92,11 @@ public class VotingService {
         results.computeIfPresent(vote.getRestaurant().id(), (key, val) -> val + 1);
     }
 
-    @CacheEvict(value = "results", allEntries = true)
     public Vote vote(Vote vote) {
         Assert.notNull(vote, "vote must not be null");
 
         if (LocalTime.now().isAfter(LocalTime.of(11, 0))) {
-            return null;
+//            return null;
         }
 
         Vote lastVote = getLastUserVote(vote.getUser().id(), vote.getDateTime().toLocalDate());
@@ -112,14 +112,12 @@ public class VotingService {
         return saved;
     }
 
-    @CacheEvict(value = "results", allEntries = true)
     public Restaurant addRestaurant(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
         results.put(restaurant.id(), 0);
         return restaurant;
     }
 
-    @CacheEvict(value = "results", allEntries = true)
     public void deleteRestaurant(int id) {
         results.remove(id);
     }
@@ -134,7 +132,6 @@ public class VotingService {
         return voteRepository.getBetweenHalfOpen(date.atStartOfDay(), date.plusDays(1).atStartOfDay());
     }
 
-    @Cacheable("results")
     public Map<Integer, Integer> getResults() {
         return Map.copyOf(results);
     }

@@ -10,5 +10,6 @@
 
 <header>
     <a href="/">Home</a>
+    <a href="/logout">Logout</a>
     <hr>
 </header>
