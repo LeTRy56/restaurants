@@ -1,12 +1,10 @@
 package ru.letry.restaurants;
 
-import org.springframework.security.core.GrantedAuthority;
 import ru.letry.restaurants.dto.UserDTO;
 import ru.letry.restaurants.model.User;
 import ru.letry.restaurants.util.DTOUtil;
 
 import java.io.Serial;
-import java.util.Collection;
 
 public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
 

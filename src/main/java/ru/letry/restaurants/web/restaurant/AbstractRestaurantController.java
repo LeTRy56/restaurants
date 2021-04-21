@@ -3,6 +3,7 @@ package ru.letry.restaurants.web.restaurant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import ru.letry.restaurants.dto.RestaurantDTO;
 import ru.letry.restaurants.dto.UserDTO;
 import ru.letry.restaurants.model.Dish;
@@ -37,48 +38,56 @@ public abstract class AbstractRestaurantController {
     @Autowired
     protected UserService userService;
 
-    public List<RestaurantDTO> getAll() {
+    protected List<RestaurantDTO> getAll() {
         int userId = SecurityUtil.authUserId();
         log.info("getAll by user {}", userId);
         return DTOUtil.getRestaurantDTOs(restaurantService.getAll(), votingService.getResults());
     }
 
-    public Restaurant get(int id) {
+    protected void populateModel (Model model) {
+        int userId = SecurityUtil.authUserId();
+        log.info("getAll by user {}", userId);
+        model.addAttribute("restaurants", getAll());
+        model.addAttribute("user", getUser());
+    }
+
+    protected Restaurant get(int id) {
         int userId = SecurityUtil.authUserId();
         log.info("get restaurant {} by user {}", id, userId);
         return restaurantService.get(id);
     }
 
-    public UserDTO getUser() {
+    protected UserDTO getUser() {
         int userId = SecurityUtil.authUserId();
+        log.info("get user {}", userId);
         return DTOUtil.getUserDTO(
                 userService.get(userId),
                 votingService.getLastUserVote(userId, LocalDate.now())
         );
     }
 
-    public Restaurant create(Restaurant restaurant) {
+    protected Restaurant create(Restaurant restaurant) {
         int userId = SecurityUtil.authUserId();
         checkNew(restaurant);
         log.info("create restaurant {} by user {}", restaurant, userId);
         return votingService.addRestaurant(restaurantService.create(restaurant, userId));
     }
 
-    public void update(Restaurant restaurant, int restaurantId) {
+    protected void update(Restaurant restaurant, int restaurantId) {
         int userId = SecurityUtil.authUserId();
         assureIdConsistent(restaurant, restaurantId);
         log.info("update restaurant {} by user {}", restaurant, userId);
         restaurantService.update(restaurant, userId);
     }
 
-    public void delete(int id) {
+    protected void delete(int id) {
         int userId = SecurityUtil.authUserId();
         log.info("delete restaurant {} by user {}", id, userId);
         restaurantService.delete(id, userId);
         votingService.deleteRestaurant(id);
     }
 
-    public Vote voteRestaurant(int restaurantId) {
+    protected Vote voteForRestaurant(int restaurantId) {
         int userId = SecurityUtil.authUserId();
         log.info("vote for restaurant {} by user {}", restaurantId, userId);
         return votingService.vote(new Vote(
@@ -87,17 +96,15 @@ public abstract class AbstractRestaurantController {
                 restaurantService.get(restaurantId)));
     }
 
-    public Dish createDish(Dish dish, int restaurantId) {
+    protected Dish createDish(Dish dish, int restaurantId) {
         int userId = SecurityUtil.authUserId();
         log.info("create dish for restaurant {} by user {}", restaurantId, userId);
         return dishService.create(dish, restaurantId, userId);
     }
 
-    public void deleteDish(int id, int restaurantId) {
+    protected void deleteDish(int id, int restaurantId) {
         int userId = SecurityUtil.authUserId();
         log.info("delete dish {} for restaurant {} by user {}", id, restaurantId, userId);
         dishService.delete(id, restaurantId, userId);
     }
-
-
 }

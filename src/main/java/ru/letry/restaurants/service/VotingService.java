@@ -96,7 +96,7 @@ public class VotingService {
         Assert.notNull(vote, "vote must not be null");
 
         if (LocalTime.now().isAfter(LocalTime.of(11, 0))) {
-//            return null;
+            return null;
         }
 
         Vote lastVote = getLastUserVote(vote.getUser().id(), vote.getDateTime().toLocalDate());

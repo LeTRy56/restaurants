@@ -32,7 +32,20 @@ public class DTOUtil {
 
     public static UserDTO getUserDTO(User user, Vote vote) {
         Assert.notNull(user, "user must not be null");
-        return vote != null ? new UserDTO(user.id(), user.getName(), user.getEmail(), user.getRoles(), vote.getRestaurant().id(), vote.getRestaurant().getName()) :
-                new UserDTO(user.id(), user.getName(), user.getEmail(), user.getRoles(), 0, "you did not vote today");
+        return vote != null ?
+                new UserDTO(
+                user.id(),
+                user.getName(),
+                user.getEmail(),
+                user.getRoles(),
+                vote.getRestaurant().id(),
+                "You voted for the " + vote.getRestaurant().getName() + " today") :
+
+                new UserDTO(user.id(),
+                        user.getName(),
+                        user.getEmail(),
+                        user.getRoles(),
+                        0,
+                        "You did not vote today");
     }
 }

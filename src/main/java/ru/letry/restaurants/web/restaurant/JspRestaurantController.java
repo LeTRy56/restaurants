@@ -14,20 +14,15 @@ public class JspRestaurantController extends AbstractRestaurantController {
 
     @GetMapping
     public String getRestaurants(Model model) {
-        model.addAttribute("restaurants", super.getAll());
-        model.addAttribute("user", super.getUser());
-
+        super.populateModel(model);
         return SecurityUtil.get().getUserDTO().getRoles().contains(Role.ADMIN) ?
                 "restaurantsAdmin" :
                 "restaurants";
-//        return "restaurants";
     }
 
     @GetMapping("/{id}/vote")
     public String vote(@PathVariable int id) {
-        super.voteRestaurant(id);
+        super.voteForRestaurant(id);
         return "redirect:/restaurants";
     }
-
-
 }

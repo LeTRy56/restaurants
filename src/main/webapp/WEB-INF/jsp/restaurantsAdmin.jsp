@@ -15,9 +15,9 @@
     <h3>Choice of restaurant</h3>
     <p></p>
     <jsp:useBean id="user" type="ru.letry.restaurants.dto.UserDTO" scope="request"/>
-    You voted for the restaurant today: ${user.restaurantName}
+    ${user.votedForRestaurant}
     <p></p>
-    <form method="post" action="/admin/restaurants">
+    <form method="post" action="${pageContext.request.contextPath}/admin/restaurants">
         <input type="text" name="restaurantName" value="New restaurant" minlength="2" maxlength="100" required>
         <button type="submit">Add restaurant</button>
     </form>
@@ -48,9 +48,9 @@
                     </c:forEach>
                 </th>
                 <th>${restaurant.votes}</th>
-                <th><a href="/admin/restaurants/${restaurant.id}/vote"><input type="button" value="Vote"></a></th>
-                <th><a href="/admin/restaurants/${restaurant.id}/update"><input type="button" value="Update"></a></th>
-                <th><a href="/admin/restaurants/${restaurant.id}/delete"><input type="button" value="Delete"></a></th>
+                <th><a href="restaurants/${restaurant.id}/vote"><input type="button" value="Vote"></a></th>
+                <th><a href="admin/restaurants/${restaurant.id}/update"><input type="button" value="Update"></a></th>
+                <th><a href="admin/restaurants/${restaurant.id}/delete"><input type="button" value="Delete"></a></th>
             </tr>
             </c:forEach>
         </table>

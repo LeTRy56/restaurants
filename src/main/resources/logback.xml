@@ -5,7 +5,10 @@
     <jmxConfigurator/>
 
     <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>${WEBAPPS_LOG}/restaurants/restaurants.log</file>
         <file>${RESTAURANTS_ROOT}/log/restaurants.log</file>
+<!--        <file>${catalina.base}/logs/restaurants.log</file>-->
+        <file>${CATALINA_BASE}/logs/restaurants.log</file>
 
         <encoder>
             <charset>UTF-8</charset>

@@ -15,7 +15,7 @@
     <h3>Choice of restaurant</h3>
     <p></p>
     <jsp:useBean id="user" type="ru.letry.restaurants.dto.UserDTO" scope="request"/>
-    You voted for the restaurant today: ${user.restaurantName}
+    ${user.votedForRestaurant}
     <p></p>
     <br>
         <table border="1" cellpadding="8" cellspacing="0">
@@ -41,7 +41,7 @@
                     </c:forEach>
                 </th>
                 <th>${restaurant.votes}</th>
-                <th><a href="/restaurants/${restaurant.id}/vote"><input type="button" value="Vote"></a></th>
+                <th><a href="restaurants/${restaurant.id}/vote"><input type="button" value="Vote"></a></th>
             </tr>
             </c:forEach>
         </table>

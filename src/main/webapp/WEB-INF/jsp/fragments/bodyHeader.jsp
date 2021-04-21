@@ -9,7 +9,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <header>
-    <a href="/">Home</a>
-    <a href="/logout">Logout</a>
+    <a href="${pageContext.request.contextPath}/">Home</a>
+    <a href="${pageContext.request.contextPath}/logout">Logout</a>
     <hr>
 </header>

@@ -1,7 +1,5 @@
 package ru.letry.restaurants.web.restaurant;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,12 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
-import ru.letry.restaurants.util.DTOUtil;
-import ru.letry.restaurants.web.SecurityUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,17 +18,6 @@ import java.util.regex.Pattern;
 @Controller
 @RequestMapping("/admin/restaurants")
 public class JspAdminRestaurantController extends AbstractRestaurantController {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @GetMapping
-    public String getRestaurants(Model model) {
-        int userId = SecurityUtil.authUserId();
-        log.info("getAll by user {}", userId);
-        model.addAttribute("restaurants", super.getAll());
-        model.addAttribute("user", super.getUser());
-        return "restaurantsAdmin";
-    }
 
     @GetMapping("/create")
     public String create(Model model) {
@@ -76,7 +60,7 @@ public class JspAdminRestaurantController extends AbstractRestaurantController {
         } else {
             super.update(restaurant, getId(request));
         }
-        return "redirect:/admin/restaurants";
+        return "redirect:/restaurants";
     }
 
     @GetMapping("/{id}/update")
@@ -88,13 +72,7 @@ public class JspAdminRestaurantController extends AbstractRestaurantController {
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable int id, HttpServletRequest request) {
         super.delete(id);
-        return "redirect:/admin/restaurants";
-    }
-
-    @GetMapping("/{id}/vote")
-    public String vote(@PathVariable int id) {
-        super.voteRestaurant(id);
-        return "redirect:/admin/restaurants";
+        return "redirect:/restaurants";
     }
 
     @GetMapping("/{restaurantId}/dishes/create")

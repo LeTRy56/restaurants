@@ -27,17 +27,17 @@ public class UserDTO extends BaseDTO implements Serializable {
 
     private int restaurantId;
 
-    private String restaurantName;
+    private String votedForRestaurant;
 
     private Set<Role> roles;
 
-    public UserDTO(int id, String name, String email, Set<Role> roles, int restaurantId, String restaurantName) {
+    public UserDTO(int id, String name, String email, Set<Role> roles, int restaurantId, String votedForRestaurant) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.roles = new HashSet<>(roles);
         this.restaurantId = restaurantId;
-        this.restaurantName = restaurantName;
+        this.votedForRestaurant = votedForRestaurant;
     }
 
     public String getEmail() {
@@ -64,12 +64,12 @@ public class UserDTO extends BaseDTO implements Serializable {
         this.restaurantId = restaurantId;
     }
 
-    public String getRestaurantName() {
-        return restaurantName;
+    public String getVotedForRestaurant() {
+        return votedForRestaurant;
     }
 
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
+    public void setVotedForRestaurant(String votedForRestaurant) {
+        this.votedForRestaurant = votedForRestaurant;
     }
 
     public Set<Role> getRoles() {
@@ -87,12 +87,12 @@ public class UserDTO extends BaseDTO implements Serializable {
         UserDTO userDTO = (UserDTO) o;
         return id.equals(userDTO.id) &&
                 restaurantId == userDTO.restaurantId &&
-                Objects.equals(restaurantName, userDTO.restaurantName);
+                Objects.equals(votedForRestaurant, userDTO.votedForRestaurant);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, restaurantId, restaurantName);
+        return Objects.hash(id, restaurantId, votedForRestaurant);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class UserDTO extends BaseDTO implements Serializable {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", restaurantId=" + restaurantId +
-                ", restaurantName='" + restaurantName + '\'' +
+                ", restaurantName='" + votedForRestaurant + '\'' +
                 '}';
     }
 }
