@@ -12,6 +12,7 @@ import ru.letry.restaurants.repository.UserRepository;
 import java.util.List;
 import java.util.Objects;
 
+import static ru.letry.restaurants.util.ValidationUtil.checkNew;
 import static ru.letry.restaurants.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -24,8 +25,10 @@ public class DishService {
         this.userRepository = userRepository;
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     public Dish create(Dish dish, int restaurantId, int userId) {
         Assert.notNull(dish, "restaurant must not be null");
+        checkNew(dish);
         return getUser(userId).getRoles().contains(Role.ADMIN) ? dishRepository.save(dish, restaurantId) : null;
     }
 
@@ -33,6 +36,7 @@ public class DishService {
         return checkNotFoundWithId(dishRepository.get(id, restaurantId), id);
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void update(Dish dish, int restaurantId, int userId) {
         Objects.requireNonNull(dish, "dish must not be null");
         if (getUser(userId).getRoles().contains(Role.ADMIN)) {
@@ -40,6 +44,7 @@ public class DishService {
         }
     }
 
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id, int restaurantId, int userId) {
         if (getUser(userId).getRoles().contains(Role.ADMIN)) {
             checkNotFoundWithId(dishRepository.delete(id, restaurantId), id);

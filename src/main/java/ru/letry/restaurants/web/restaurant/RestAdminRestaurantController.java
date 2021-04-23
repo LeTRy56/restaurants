@@ -20,7 +20,7 @@ public class RestAdminRestaurantController extends AbstractRestaurantController 
     static final String REST_URL = "/rest/admin/restaurants";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> createWithLocation(@RequestBody Restaurant restaurant) {
+    public ResponseEntity<Restaurant> createWithLocation(@RequestBody RestaurantDTO restaurant) {
         Restaurant created = super.create(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -31,7 +31,7 @@ public class RestAdminRestaurantController extends AbstractRestaurantController 
     @Override
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Restaurant restaurant, @PathVariable int id) {
+    public void update(@RequestBody RestaurantDTO restaurant, @PathVariable int id) {
         super.update(restaurant, id);
     }
 

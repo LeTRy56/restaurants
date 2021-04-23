@@ -7,15 +7,22 @@ import java.util.Set;
 
 public class RestaurantDTO extends BaseDTO {
 
-    private final Set<Dish> dishes;
+    private Set<Dish> dishes;
 
-    private final int votes;
+    private int votes;
 
     public RestaurantDTO(Integer id, String name, Set<Dish> dishes, int votes) {
         this.id = id;
         this.name = name;
         this.dishes = dishes;
         this.votes = votes;
+    }
+
+    public RestaurantDTO(String name, Set<Dish> dishes) {
+        this(null, name, dishes, 0);
+    }
+
+    public RestaurantDTO() {
     }
 
     public Set<Dish> getDishes() {

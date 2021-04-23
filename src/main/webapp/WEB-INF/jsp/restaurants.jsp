@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="https://restaurants.letry.ru/functions" %>
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
@@ -15,6 +16,10 @@
     <h3>Choice of restaurant</h3>
     <p></p>
     <jsp:useBean id="user" type="ru.letry.restaurants.dto.UserDTO" scope="request"/>
+    You can vote from 0:00 to 11:00 AM.
+    <p></p>
+    Server time: ${fn:formatDateTime(serverTime)}
+    <p></p>
     ${user.votedForRestaurant}
     <p></p>
     <br>

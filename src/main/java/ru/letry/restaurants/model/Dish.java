@@ -3,6 +3,9 @@ package ru.letry.restaurants.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -12,6 +15,7 @@ import java.time.LocalDate;
 
 
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "dishes", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "name"}, name = "dishes_unique_restaurant_name_idx")})
 public class Dish extends AbstractNamedEntity {
 
@@ -21,6 +25,7 @@ public class Dish extends AbstractNamedEntity {
     @DecimalMax("5000.0")
     private BigDecimal price;
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "restaurant_id", nullable = false)

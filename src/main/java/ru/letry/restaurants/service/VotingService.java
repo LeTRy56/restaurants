@@ -1,11 +1,14 @@
 package ru.letry.restaurants.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.model.Vote;
 import ru.letry.restaurants.repository.RestaurantRepository;
 import ru.letry.restaurants.repository.VoteRepository;
+import ru.letry.restaurants.util.DateTimeUtil;
 
 import javax.annotation.PostConstruct;
 import java.time.*;
@@ -92,10 +95,11 @@ public class VotingService {
         results.computeIfPresent(vote.getRestaurant().id(), (key, val) -> val + 1);
     }
 
+    @CacheEvict(value = "lastUserVote", allEntries = true)
     public Vote vote(Vote vote) {
         Assert.notNull(vote, "vote must not be null");
 
-        if (LocalTime.now().isAfter(LocalTime.of(11, 0))) {
+        if (LocalTime.now().isAfter(DateTimeUtil.END_VOTING_TIME)) {
             return null;
         }
 
@@ -122,6 +126,7 @@ public class VotingService {
         results.remove(id);
     }
 
+    @Cacheable("lastUserVote")
     public Vote getLastUserVote(int userId, LocalDate date) {
         Assert.notNull(date, "date must not be null");
         return voteRepository.getLastUserVote(userId, date.atStartOfDay(), date.plusDays(1).atStartOfDay());

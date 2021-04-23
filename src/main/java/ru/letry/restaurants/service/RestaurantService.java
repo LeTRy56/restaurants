@@ -2,6 +2,7 @@ package ru.letry.restaurants.service;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -14,6 +15,7 @@ import ru.letry.restaurants.repository.RestaurantRepository;
 import ru.letry.restaurants.repository.UserRepository;
 
 import java.util.List;
+import java.util.Set;
 
 import static ru.letry.restaurants.util.ValidationUtil.*;
 
@@ -32,7 +34,20 @@ public class RestaurantService {
     @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant create(Restaurant restaurant, int userId) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        return getUser(userId).getRoles().contains(Role.ADMIN) ? restaurantRepository.save(restaurant) : null;
+        checkNew(restaurant);
+        if (getUser(userId).getRoles().contains(Role.ADMIN)) {
+            Restaurant saved = restaurantRepository.save(restaurant);
+            Set<Dish> dishes = restaurant.getDishes();
+            if (dishes != null) {
+                for (Dish dish : dishes) {
+                    checkNew(dish);
+                    dishRepository.save(dish, saved.getId());
+                }
+            }
+            return get(saved.getId());
+        } else {
+            return null;
+        }
     }
 
     public Restaurant get(int id) {

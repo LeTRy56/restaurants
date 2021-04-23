@@ -1,6 +1,6 @@
 <config xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
         xmlns='http://www.ehcache.org/v3'
-        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
+        xsi:schemaLocation="http://www.ehcache.org/v3 https://www.ehcache.org/schema/ehcache-core-3.0.xsd">
 
     <!--http://www.ehcache.org/documentation/3.8/xml.html-->
     <!--http://www.ehcache.org/documentation/3.8/107.html#supplement-jsr-107-configurations-->
@@ -11,7 +11,7 @@
         <expiry>
             <ttl unit="minutes">5</ttl>
         </expiry>
-        <heap unit="entries">5000</heap>
+        <heap>5000</heap>
     </cache-template>
 
     <cache-template name="singleNonExpiryCache">
@@ -21,7 +21,9 @@
         <heap>1</heap>
     </cache-template>
 
-    <cache alias="restaurants" uses-template="singleNonExpiryCache"/>
+    <cache alias="restaurants" uses-template="expiryCache"/>
     <cache alias="users" uses-template="singleNonExpiryCache"/>
-    <cache alias="results" uses-template="singleNonExpiryCache"/>
+    <cache alias="user" uses-template="singleNonExpiryCache"/>
+    <cache alias="lastUserVote" uses-template="singleNonExpiryCache"/>
+
 </config>

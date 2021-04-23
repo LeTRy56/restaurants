@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.letry.restaurants.dto.RestaurantDTO;
 import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
 
@@ -30,10 +31,9 @@ public class JspAdminRestaurantController extends AbstractRestaurantController {
 
     @PostMapping
     public String createOrUpdate(HttpServletRequest request) {
-        Restaurant restaurant = new Restaurant(
-                request.getParameter("restaurantName"),
-                Collections.emptySet());
-
+//        Restaurant restaurant = new Restaurant(
+//                request.getParameter("restaurantName"),
+//                Collections.emptySet());
         Set<Dish> dishes = new HashSet<>();
 
         Map<String, String[]> map = request.getParameterMap();
@@ -52,7 +52,10 @@ public class JspAdminRestaurantController extends AbstractRestaurantController {
                 dishes.add(new Dish(dishId, dishName, dishPrice));
             }
         }
-        restaurant.setDishes(dishes);
+
+        RestaurantDTO restaurant = new RestaurantDTO(
+                request.getParameter("restaurantName"),
+                dishes);
 
         String id = request.getParameter("id");
         if (id == null || id.isEmpty()) {

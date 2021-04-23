@@ -34,12 +34,13 @@ public class DataJpaDishRepository implements DishRepository {
         }
         dish.setRestaurant(restaurantRepository.getOne(restaurantId));
         Dish saved = crudDishRepository.save(dish);
-        clearCache(restaurantId);
+        clearHibernateCache();
         return saved;
     }
 
     @Override
     public boolean delete(int id, int restaurantId) {
+        clearHibernateCache();
         return crudDishRepository.delete(id, restaurantId) != 0;
     }
 
@@ -55,11 +56,12 @@ public class DataJpaDishRepository implements DishRepository {
         return crudDishRepository.getAll(restaurantId);
     }
 
-    private void clearCache(int restaurantId) {
-        //invalidate Hibernate 2nd level cache Restaurant entity:
+    private void clearHibernateCache() {
+        //invalidate Hibernate 2nd level cache:
         Session session = em.unwrap(Session.class);
         SessionFactory sessionFactory = session.getSessionFactory();
         Cache cache = sessionFactory.getCache();
-        cache.evictEntityData(Restaurant.class, restaurantId);
+        cache.evictAllRegions();
+//        cache.evictEntityData(Restaurant.class, restaurantId);
     }
 }

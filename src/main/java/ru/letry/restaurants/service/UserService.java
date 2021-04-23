@@ -2,6 +2,7 @@ package ru.letry.restaurants.service;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,30 +28,39 @@ public class UserService implements UserDetailsService {
         this.repository = repository;
     }
 
-    @CacheEvict(value = "users", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "users", allEntries = true),
+            @CacheEvict(value = "user", allEntries = true),
+    })
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return repository.save(user);
     }
 
+    @Cacheable("user")
     public User get(int id) {
         return checkNotFoundWithId(repository.get(id), id);
     }
 
-    @CacheEvict(value = "users", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "users", allEntries = true),
+            @CacheEvict(value = "user", allEntries = true),
+    })
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.id());
     }
 
-    @CacheEvict(value = "users", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "users", allEntries = true),
+            @CacheEvict(value = "user", allEntries = true),
+    })
     public void delete(int id) {
         checkNotFoundWithId(repository.delete(id), id);
     }
 
-
     public User getByEmail(String email) {
-        Assert.notNull(email, "email must be null");
+        Assert.notNull(email, "email must not be null");
         return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
@@ -61,7 +71,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = repository.getByEmail(email.toLowerCase());
+        User user = getByEmail(email.toLowerCase());
         if (user == null) {
             throw new UsernameNotFoundException("User " + email + " is not found");
         }

@@ -39,13 +39,13 @@ public class DTOUtil {
                 user.getEmail(),
                 user.getRoles(),
                 vote.getRestaurant().id(),
-                "You voted for the " + vote.getRestaurant().getName() + " today") :
+                "You voted for the " + vote.getRestaurant().getName() + " today.") :
 
                 new UserDTO(user.id(),
                         user.getName(),
                         user.getEmail(),
                         user.getRoles(),
                         0,
-                        "You did not vote today");
+                        "You did not vote today.");
     }
 }

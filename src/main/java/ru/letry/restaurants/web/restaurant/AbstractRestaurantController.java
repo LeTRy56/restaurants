@@ -14,10 +14,12 @@ import ru.letry.restaurants.service.RestaurantService;
 import ru.letry.restaurants.service.UserService;
 import ru.letry.restaurants.service.VotingService;
 import ru.letry.restaurants.util.DTOUtil;
+import ru.letry.restaurants.util.DateTimeUtil;
 import ru.letry.restaurants.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static ru.letry.restaurants.util.ValidationUtil.assureIdConsistent;
@@ -49,6 +51,7 @@ public abstract class AbstractRestaurantController {
         log.info("getAll by user {}", userId);
         model.addAttribute("restaurants", getAll());
         model.addAttribute("user", getUser());
+        model.addAttribute("serverTime", LocalDateTime.now());
     }
 
     protected Restaurant get(int id) {
@@ -66,18 +69,20 @@ public abstract class AbstractRestaurantController {
         );
     }
 
-    protected Restaurant create(Restaurant restaurant) {
+    protected Restaurant create(RestaurantDTO restaurant) {
         int userId = SecurityUtil.authUserId();
-        checkNew(restaurant);
+        Restaurant newRestaurant = new Restaurant(restaurant.getName(), restaurant.getDishes());
+        checkNew(newRestaurant);
         log.info("create restaurant {} by user {}", restaurant, userId);
-        return votingService.addRestaurant(restaurantService.create(restaurant, userId));
+        return votingService.addRestaurant(restaurantService.create(newRestaurant, userId));
     }
 
-    protected void update(Restaurant restaurant, int restaurantId) {
+    protected void update(RestaurantDTO restaurant, int restaurantId) {
         int userId = SecurityUtil.authUserId();
-        assureIdConsistent(restaurant, restaurantId);
+        Restaurant newRestaurant = new Restaurant(restaurant.getName(), restaurant.getDishes());
+        assureIdConsistent(newRestaurant, restaurantId);
         log.info("update restaurant {} by user {}", restaurant, userId);
-        restaurantService.update(restaurant, userId);
+        restaurantService.update(newRestaurant, userId);
     }
 
     protected void delete(int id) {
@@ -88,6 +93,10 @@ public abstract class AbstractRestaurantController {
     }
 
     protected Vote voteForRestaurant(int restaurantId) {
+        if (LocalTime.now().isAfter(DateTimeUtil.END_VOTING_TIME)) {
+            return null;
+        }
+
         int userId = SecurityUtil.authUserId();
         log.info("vote for restaurant {} by user {}", restaurantId, userId);
         return votingService.vote(new Vote(
