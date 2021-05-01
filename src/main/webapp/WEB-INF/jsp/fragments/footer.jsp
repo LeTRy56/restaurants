@@ -9,5 +9,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <footer>
     <hr>
-    <a href="${pageContext.request.contextPath}/srs">Software Requirements Specification</a> | <a href="https://github.com/LeTRy56/restaurants">Source code</a>
+    <a href="${pageContext.request.contextPath}/srs"><input type="button" value="Software Requirements Specification"></a>
+    <a href="https://github.com/LeTRy56/restaurants" target="_blank"><input type="button" value="Source code"></a>
+    <a href="swagger-ui.html" target="_blank"><input type="button" value="Swagger REST API Documentation"></a>
 </footer>

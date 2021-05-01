@@ -4,15 +4,39 @@
     <!-- To enable JMX Management -->
     <jmxConfigurator/>
 
+
+
+    <property name="MY_HOME" value="/home/tomcat" />
+    <property name="LOG_FILE" value="restaurants" />
+
     <appender name="file" class="ch.qos.logback.core.FileAppender">
-        <file>${WEBAPPS_LOG}/restaurants/restaurants.log</file>
-        <file>${RESTAURANTS_ROOT}/log/restaurants.log</file>
+<!--        <file>${MY_HOME}/restaurants.log</file>-->
+        <file>${MY_HOME}/${LOG_FILE}.log</file>
+<!--        <file>${WEBAPPS_LOG}/restaurants/restaurants.log</file>-->
+<!--        <file>${RESTAURANTS_ROOT}/log/restaurants.log</file>-->
 <!--        <file>${catalina.base}/logs/restaurants.log</file>-->
-        <file>${CATALINA_BASE}/logs/restaurants.log</file>
+<!--        <file>${CATALINA_BASE}/logs/restaurants.log</file>-->
 
         <encoder>
             <charset>UTF-8</charset>
             <pattern>%date %-5level %logger{50}.%M:%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file_out" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${MY_HOME}/${LOG_FILE}.log</file>
+        <append>true</append>
+        <!-- Support multiple-JVM writing to the same log file -->
+        <prudent>true</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Daily rollover -->
+            <fileNamePattern>${MY_HOME}/${LOG_FILE}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- Keep 7 days' worth of history -->
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%-5level] %d{HH:mm:ss.SSS} [%.6thread] %logger - %msg%n</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 
@@ -29,6 +53,7 @@
 
     <root level="info">
         <appender-ref ref="file"/>
+        <appender-ref ref="file_out"/>
         <appender-ref ref="console"/>
     </root>
 </configuration>

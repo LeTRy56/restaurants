@@ -1,5 +1,6 @@
 package ru.letry.restaurants.model;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.util.CollectionUtils;
@@ -17,6 +18,7 @@ public class Restaurant extends AbstractNamedEntity {
 
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
+    @BatchSize(size = 200)
     private Set<Dish> dishes;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
