@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
 
     @Caching(evict = {
             @CacheEvict(value = "users", allEntries = true),
-            @CacheEvict(value = "user", allEntries = true),
+            @CacheEvict(value = "user", allEntries = true)
     })
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService {
 
     @Caching(evict = {
             @CacheEvict(value = "users", allEntries = true),
-            @CacheEvict(value = "user", allEntries = true),
+            @CacheEvict(value = "user", allEntries = true)
     })
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
@@ -53,7 +53,7 @@ public class UserService implements UserDetailsService {
 
     @Caching(evict = {
             @CacheEvict(value = "users", allEntries = true),
-            @CacheEvict(value = "user", allEntries = true),
+            @CacheEvict(value = "user", allEntries = true)
     })
     public void delete(int id) {
         checkNotFoundWithId(repository.delete(id), id);

@@ -31,9 +31,6 @@ public class JspAdminRestaurantController extends AbstractRestaurantController {
 
     @PostMapping
     public String createOrUpdate(HttpServletRequest request) {
-//        Restaurant restaurant = new Restaurant(
-//                request.getParameter("restaurantName"),
-//                Collections.emptySet());
         Set<Dish> dishes = new HashSet<>();
 
         Map<String, String[]> map = request.getParameterMap();
@@ -80,7 +77,6 @@ public class JspAdminRestaurantController extends AbstractRestaurantController {
 
     @GetMapping("/{restaurantId}/dishes/create")
     public String dishCreate(@PathVariable int restaurantId, Model model) {
-        //todo new controller for /dishes?
         super.createDish(new Dish("Dish", BigDecimal.TEN), restaurantId);
         model.addAttribute("restaurant", restaurantService.get(restaurantId));
         return "restaurantForm";

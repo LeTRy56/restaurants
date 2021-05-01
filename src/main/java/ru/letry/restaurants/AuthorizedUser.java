@@ -15,7 +15,6 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
 
     public AuthorizedUser(User user) {
         super(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, user.getRoles());
-        //todo remove null in params:
         this.userDTO = DTOUtil.getUserDTO(user, null);
     }
 

@@ -1,16 +1,18 @@
-dl {
-    background: none repeat scroll 0 0;
-    margin: 8px 0;
-    padding: 0;
+header {
+    padding-top: 10px;
 }
 
-dt {
-    display: inline-block;
-    width: 70px;
+body {
+    height: 100%;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
 }
 
-dd {
-    display: inline-block;
-    margin-left: 8px;
-    vertical-align: top;
+footer {
+    padding-bottom: 10px;
+    margin-top:auto;
 }
