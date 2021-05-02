@@ -9,6 +9,7 @@ import ru.letry.restaurants.model.User;
 import ru.letry.restaurants.repository.DishRepository;
 import ru.letry.restaurants.repository.UserRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,6 +54,10 @@ public class DishService {
 
     public List<Dish> getAll(int restaurantId) {
         return dishRepository.getAll(restaurantId);
+    }
+
+    public List<Dish> getAll(int restaurantId, LocalDate date) {
+        return dishRepository.getAll(restaurantId, date);
     }
 
     private User getUser(int userId) {

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.model.Vote;
-import ru.letry.restaurants.repository.RestaurantRepository;
 import ru.letry.restaurants.repository.VoteRepository;
 import ru.letry.restaurants.util.DateTimeUtil;
 
@@ -27,16 +26,16 @@ import static ru.letry.restaurants.util.MapUtil.sortByValue;
 public class VotingService {
     private final VoteRepository voteRepository;
 
-    private final RestaurantRepository restaurantRepository;
+    private final RestaurantService restaurantService;
 
     //<restaurantId, number of votes>
     private final Map<Integer, Integer> results = new ConcurrentHashMap<>();
 
     private final static ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
-    public VotingService(VoteRepository voteRepository, RestaurantRepository restaurantRepository) {
+    public VotingService(VoteRepository voteRepository, RestaurantService restaurantService) {
         this.voteRepository = voteRepository;
-        this.restaurantRepository = restaurantRepository;
+        this.restaurantService = restaurantService;
     }
 
     @PostConstruct
@@ -58,7 +57,7 @@ public class VotingService {
 
         results.clear();
 
-        List<Restaurant> restaurants = restaurantRepository.getAll();
+        List<Restaurant> restaurants = restaurantService.getAll();
         for (Restaurant restaurant : restaurants) {
             results.put(restaurant.id(), 0);
         }

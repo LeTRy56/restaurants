@@ -5,7 +5,7 @@
 	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <http pattern="/resources/**" security="none"/>
-    <http pattern="/favicon.ico" security="none" />
+    <http pattern="/resources/images/favicon.ico" security="none" />
     <!--    <http pattern="/webjars/**" security="none"/>-->
 
     <http pattern="/rest/**" use-expressions="true" name="restSecurityFilterChain">

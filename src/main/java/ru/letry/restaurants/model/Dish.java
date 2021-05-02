@@ -34,7 +34,10 @@ public class Dish extends AbstractNamedEntity {
 
     @Column(name = "date_time", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
-    private final LocalDate date = LocalDate.now();
+    private LocalDate date = LocalDate.now();
+
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
+    private boolean enabled = true;
 
     protected Dish(Integer id, String name) {
         super(id, name);
@@ -49,9 +52,28 @@ public class Dish extends AbstractNamedEntity {
         this.price = price;
     }
 
+    public Dish(String name, BigDecimal price, LocalDate date) {
+        super(null, name);
+        this.price = price;
+        this.date = date;
+    }
+
+    public Dish(Integer id, String name, BigDecimal price, LocalDate date) {
+        super(id, name);
+        this.price = price;
+        this.date = date;
+    }
+
     public Dish() {
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public BigDecimal getPrice() {
         return price;

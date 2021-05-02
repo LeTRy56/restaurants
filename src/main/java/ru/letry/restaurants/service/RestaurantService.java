@@ -2,7 +2,6 @@ package ru.letry.restaurants.service;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -10,25 +9,25 @@ import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
 import ru.letry.restaurants.model.Role;
 import ru.letry.restaurants.model.User;
-import ru.letry.restaurants.repository.DishRepository;
 import ru.letry.restaurants.repository.RestaurantRepository;
-import ru.letry.restaurants.repository.UserRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static ru.letry.restaurants.util.ValidationUtil.*;
 
 @Service
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
-    private final UserRepository userRepository;
-    private final DishRepository dishRepository;
+    private final UserService userService;
+    private final DishService dishService;
 
-    public RestaurantService(RestaurantRepository restaurantRepository, UserRepository userRepository, DishRepository dishRepository) {
+    public RestaurantService(RestaurantRepository restaurantRepository, UserService userService, DishService dishService) {
         this.restaurantRepository = restaurantRepository;
-        this.userRepository = userRepository;
-        this.dishRepository = dishRepository;
+        this.userService = userService;
+        this.dishService = dishService;
     }
 
     @CacheEvict(value = "restaurants", allEntries = true)
@@ -41,17 +40,22 @@ public class RestaurantService {
             if (dishes != null) {
                 for (Dish dish : dishes) {
                     checkNew(dish);
-                    dishRepository.save(dish, saved.getId());
+                    dishService.create(dish, saved.getId(), userId);
                 }
             }
-            return get(saved.getId());
+            return get(saved.getId(), LocalDate.now());
         } else {
             return null;
         }
     }
 
-    public Restaurant get(int id) {
-        return checkNotFoundWithId(restaurantRepository.get(id), id);
+    public Restaurant get(int id, LocalDate date) {
+        Assert.notNull(date, "date must not be null");
+        Restaurant restaurant = restaurantRepository.get(id);
+        if (restaurant != null) {
+            restaurant.setDishes(dishService.getAll(restaurant.id(), date));
+        }
+        return checkNotFoundWithId(restaurant, id);
     }
 
     @Transactional
@@ -60,7 +64,7 @@ public class RestaurantService {
         Assert.notNull(restaurant, "restaurant must not be null");
         if (getUser(userId).getRoles().contains(Role.ADMIN)) {
             for (Dish dish : restaurant.getDishes()) {
-                checkNotFoundWithId(dishRepository.save(dish, restaurant.id()), dish.id());
+                dishService.update(dish, restaurant.id(), userId);
             }
             checkNotFoundWithId(restaurantRepository.save(restaurant), restaurant.id());
         }
@@ -75,11 +79,17 @@ public class RestaurantService {
 
     @Cacheable("restaurants")
     public List<Restaurant> getAll() {
-        return restaurantRepository.getAll();
+        List<Restaurant> enabledRestaurants = restaurantRepository.getAll().stream()
+                .filter(Restaurant::isEnabled)
+                .collect(Collectors.toList());
+
+        enabledRestaurants.forEach(
+                restaurant -> restaurant.setDishes(dishService.getAll(restaurant.id(), LocalDate.now())));
+        return enabledRestaurants;
     }
 
     private User getUser(int userId) {
-        return checkNotFoundWithId(userRepository.get(userId), userId);
+        return checkNotFoundWithId(userService.get(userId), userId);
     }
 
 }

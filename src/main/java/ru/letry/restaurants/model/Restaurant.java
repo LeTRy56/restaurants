@@ -1,5 +1,6 @@
 package ru.letry.restaurants.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -17,7 +18,8 @@ import java.util.Set;
 public class Restaurant extends AbstractNamedEntity {
 
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @JsonBackReference
     @BatchSize(size = 200)
     private Set<Dish> dishes;
 

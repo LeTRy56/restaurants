@@ -13,7 +13,7 @@
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <h3>Choice of restaurant</h3>
+    <h3>Choice of Restaurant for lunch</h3>
     <p></p>
     <jsp:useBean id="user" type="ru.letry.restaurants.dto.UserDTO" scope="request"/>
     You can vote from 0:00 to 11:00 AM.

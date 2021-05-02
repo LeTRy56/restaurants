@@ -8,6 +8,7 @@ import ru.letry.restaurants.util.CacheUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -37,8 +38,9 @@ public class DataJpaDishRepository implements DishRepository {
 
     @Override
     public boolean delete(int id, int restaurantId) {
+        boolean isDeleted = crudDishRepository.delete(id, restaurantId) != 0;
         CacheUtil.clearHibernateCache(em);
-        return crudDishRepository.delete(id, restaurantId) != 0;
+        return isDeleted;
     }
 
     @Override
@@ -51,5 +53,10 @@ public class DataJpaDishRepository implements DishRepository {
     @Override
     public List<Dish> getAll(int restaurantId) {
         return crudDishRepository.getAll(restaurantId);
+    }
+
+    @Override
+    public List<Dish> getAll(int restaurantId, LocalDate date) {
+        return crudDishRepository.getAll(restaurantId, date);
     }
 }

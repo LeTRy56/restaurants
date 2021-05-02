@@ -1,17 +1,19 @@
 package ru.letry.restaurants.web.restaurant;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpRequest;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.letry.restaurants.dto.RestaurantDTO;
 import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,7 +48,8 @@ public class JspAdminRestaurantController extends AbstractRestaurantController {
                         Arrays.stream(map.get("dishPrice" + dishId))
                                 .findFirst()
                                 .orElse(null)));
-                dishes.add(new Dish(dishId, dishName, dishPrice));
+                final LocalDate date = LocalDate.parse(request.getParameter("date"));
+                dishes.add(new Dish(dishId, dishName, dishPrice, date));
             }
         }
 
@@ -64,8 +67,13 @@ public class JspAdminRestaurantController extends AbstractRestaurantController {
     }
 
     @GetMapping("/{id}/update")
-    public String update(@PathVariable int id, Model model) {
-        model.addAttribute("restaurant", super.get(id));
+    public String update(@PathVariable int id, Model model,
+                         @Nullable @RequestParam("date")
+                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        if (date == null) {
+            date = LocalDate.now();
+        }
+        model.addAttribute("restaurant", super.get(id, date));
         return "restaurantForm";
     }
 
@@ -76,16 +84,26 @@ public class JspAdminRestaurantController extends AbstractRestaurantController {
     }
 
     @GetMapping("/{restaurantId}/dishes/create")
-    public String dishCreate(@PathVariable int restaurantId, Model model) {
-        super.createDish(new Dish("Dish", BigDecimal.TEN), restaurantId);
-        model.addAttribute("restaurant", restaurantService.get(restaurantId));
+    public String dishCreate(@PathVariable int restaurantId, Model model,
+                             @Nullable @RequestParam("date")
+                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        if (date == null) {
+            date = LocalDate.now();
+        }
+        super.createDish(new Dish("Dish", BigDecimal.TEN, date), restaurantId);
+        model.addAttribute("restaurant", super.get(restaurantId, date));
         return "restaurantForm";
     }
 
     @GetMapping("/{restaurantId}/dishes/{dishId}/delete")
-    public String dishDelete(@PathVariable int restaurantId, @PathVariable int dishId, Model model) {
+    public String dishDelete(@PathVariable int restaurantId, @PathVariable int dishId, Model model,
+                             @Nullable @RequestParam("date")
+                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         super.deleteDish(dishId, restaurantId);
-        model.addAttribute("restaurant", restaurantService.get(restaurantId));
+        if (date == null) {
+            date = LocalDate.now();
+        }
+        model.addAttribute("restaurant", super.get(restaurantId, date));
         return "restaurantForm";
     }
 

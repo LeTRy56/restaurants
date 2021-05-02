@@ -1,6 +1,12 @@
-###Software Requirements Specification:
+Choice of Restaurant for lunch
+==============================
 
-Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
+### Java web application
+
+Software Requirements Specification:
+-----------------------------------
+
+Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) **without frontend**.
 
 The task is:
 
@@ -22,9 +28,11 @@ P.S.: Make sure everything works with latest version that is on github :)
 
 P.P.S.: Assume that your API will be used by a frontend developer to build frontend on top of that.
 
->The deployed app: https://restaurants.letry.ru 
+>[Deployed application on the VPS](https://restaurants.letry.ru)
 
-### curl samples:
+
+curl samples
+-------------
 > For Windows use `Git Bash`
 
 #### get All Users

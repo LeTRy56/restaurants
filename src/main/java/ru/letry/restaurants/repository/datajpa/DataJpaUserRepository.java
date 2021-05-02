@@ -26,14 +26,16 @@ public class DataJpaUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
+        User saved = crudRepository.save(user);
         clearHibernateCache(em);
-        return crudRepository.save(user);
+        return saved;
     }
 
     @Override
     public boolean delete(int id) {
+        boolean isDeleted = crudRepository.delete(id) != 0;
         clearHibernateCache(em);
-        return crudRepository.delete(id) != 0;
+        return isDeleted;
     }
 
     @Override

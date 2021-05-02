@@ -7,9 +7,9 @@
     <groupId>ru.letry</groupId>
     <artifactId>restaurants</artifactId>
     <packaging>war</packaging>
-    <version>3.2</version>
+    <version>3.5</version>
 
-    <name>Choice of restaurant</name>
+    <name>Choice of Restaurant for lunch</name>
     <url>https://restaurants.letry.ru/</url>
 
     <properties>

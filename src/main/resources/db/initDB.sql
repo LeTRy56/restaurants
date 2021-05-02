@@ -34,7 +34,6 @@ CREATE TABLE restaurants
 );
 -- CREATE UNIQUE INDEX restaurants_unique_name_idx ON restaurants (name);
 
-
 CREATE TABLE dishes
 (
     id              INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
@@ -42,6 +41,7 @@ CREATE TABLE dishes
     date_time       TIMESTAMP           DEFAULT now()   NOT NULL,
     name            VARCHAR                             NOT NULL,
     price           REAL                                NOT NULL,
+    enabled         BOOL                DEFAULT TRUE    NOT NULL,
     FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
 -- CREATE UNIQUE INDEX dishes_unique_restaurant_name_idx ON dishes (restaurant_id, name);

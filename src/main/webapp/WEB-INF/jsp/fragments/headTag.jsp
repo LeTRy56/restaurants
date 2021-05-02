@@ -12,5 +12,5 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Restaurants</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
-    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico">
 </head>
