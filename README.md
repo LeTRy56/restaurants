@@ -34,6 +34,8 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 curl samples
 -------------
 > For Windows use `Git Bash`
+> 
+>[Swagger REST API Documentation](https://restaurants.letry.ru/swagger-ui.html)
 
 #### get All Users
 `curl -s http://localhost:8080/rest/admin/users --user admin@domain.com:admin`

@@ -8,11 +8,13 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.letry.restaurants.AuthorizedUser;
 import ru.letry.restaurants.model.User;
 import ru.letry.restaurants.repository.UserRepository;
+import ru.letry.restaurants.util.DTOUtil;
 
 import java.util.List;
 
@@ -23,9 +25,11 @@ import static ru.letry.restaurants.util.ValidationUtil.checkNotFoundWithId;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Caching(evict = {
@@ -34,7 +38,7 @@ public class UserService implements UserDetailsService {
     })
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
-        return repository.save(user);
+        return prepareAndSave(user);
     }
 
     @Cacheable("user")
@@ -48,7 +52,7 @@ public class UserService implements UserDetailsService {
     })
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
-        checkNotFoundWithId(repository.save(user), user.id());
+        checkNotFoundWithId(prepareAndSave(user), user.id());
     }
 
     @Caching(evict = {
@@ -76,5 +80,9 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User " + email + " is not found");
         }
         return new AuthorizedUser(user);
+    }
+
+    private User prepareAndSave(User user) {
+        return repository.save(DTOUtil.prepareToSave(user, passwordEncoder));
     }
 }

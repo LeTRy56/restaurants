@@ -2,7 +2,9 @@ package ru.letry.restaurants.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import ru.letry.restaurants.dto.RestaurantDTO;
 import ru.letry.restaurants.dto.UserDTO;
 import ru.letry.restaurants.model.Restaurant;
@@ -47,5 +49,12 @@ public class DTOUtil {
                         user.getRoles(),
                         0,
                         "You did not vote today.");
+    }
+
+    public static User prepareToSave(User user, PasswordEncoder passwordEncoder) {
+        String password = user.getPassword();
+        user.setPassword(StringUtils.hasText(password) ? passwordEncoder.encode(password) : password);
+        user.setEmail(user.getEmail().toLowerCase());
+        return user;
     }
 }
