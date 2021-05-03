@@ -7,7 +7,7 @@
     <groupId>ru.letry</groupId>
     <artifactId>restaurants</artifactId>
     <packaging>war</packaging>
-    <version>3.7.1</version>
+    <version>3.7.2</version>
 
     <name>Choice of Restaurant for lunch</name>
     <url>https://restaurants.letry.ru/</url>
@@ -31,6 +31,7 @@
 
         <!--DB-->
         <postgresql.version>42.2.18</postgresql.version>
+        <hsqldb.version>2.6.0</hsqldb.version>
 
         <!--Tests-->
         <junit.version>4.13.2</junit.version>
@@ -249,6 +250,16 @@
                     <artifactId>jul-to-slf4j</artifactId>
                     <version>${slf4j.version}</version>
                     <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>hsqldb</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                    <version>${hsqldb.version}</version>
                 </dependency>
             </dependencies>
             <activation>

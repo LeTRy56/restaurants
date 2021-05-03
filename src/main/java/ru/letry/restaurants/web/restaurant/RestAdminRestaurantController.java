@@ -65,14 +65,12 @@ public class RestAdminRestaurantController extends AbstractRestaurantController 
     public List<Dish> getDishesByDay(@PathVariable int restaurantId,
                                      @Nullable @RequestParam("date")
                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        //todo SoapUI, curl
         return super.getAllDishes(restaurantId, date);
     }
 
     @PutMapping(value = "/{restaurantId}/dishes/{dishId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateDish(@RequestBody @Valid Dish dish, @PathVariable int restaurantId, @PathVariable int dishId) {
-        //todo SoapUI, curl
         dish.setId(dishId);
         super.updateDish(dish, restaurantId);
     }
