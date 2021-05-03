@@ -12,8 +12,7 @@
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <%
-    String date;
-    date = request.getParameter("date");
+    String date = request.getParameter("date");
     if (date == null)
         date = LocalDate.now().toString();
 %>

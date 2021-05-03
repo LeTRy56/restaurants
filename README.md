@@ -1,7 +1,7 @@
 Choice of Restaurant for lunch
 ==============================
 
-### Java web application
+>[Deployed Java web application on the VPS](https://restaurants.letry.ru)
 
 Software Requirements Specification:
 -----------------------------------
@@ -28,7 +28,7 @@ P.S.: Make sure everything works with latest version that is on github :)
 
 P.P.S.: Assume that your API will be used by a frontend developer to build frontend on top of that.
 
->[Deployed application on the VPS](https://restaurants.letry.ru)
+
 
 
 curl samples

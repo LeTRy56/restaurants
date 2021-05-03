@@ -11,10 +11,10 @@ public class RootController {
         return "redirect:/restaurants";
     }
 
-//    @GetMapping("/login")
-//    public String login() {
-//        return "login";
-//    }
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 
     @GetMapping("/srs")
     public String getSpecification() {

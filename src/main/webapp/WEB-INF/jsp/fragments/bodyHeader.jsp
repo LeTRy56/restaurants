@@ -9,7 +9,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <header>
-<%--    <a href="https://letry.ru">Home</a>--%>
     <a href="https://letry.ru"><input type="button" value="Home"></a>
     <a href="${pageContext.request.contextPath}/"><input type="button" value="Restaurants"></a>
     <a href="${pageContext.request.contextPath}/logout"><input type="button" value="Logout"></a>

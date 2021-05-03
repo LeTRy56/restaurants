@@ -11,6 +11,7 @@ import ru.letry.restaurants.dto.RestaurantDTO;
 import ru.letry.restaurants.model.Dish;
 import ru.letry.restaurants.model.Restaurant;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -22,7 +23,7 @@ public class RestAdminRestaurantController extends AbstractRestaurantController 
     static final String REST_URL = "/rest/admin/restaurants";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> createWithLocation(@RequestBody RestaurantDTO restaurant) {
+    public ResponseEntity<Restaurant> createWithLocation(@RequestBody @Valid RestaurantDTO restaurant) {
         Restaurant created = super.create(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -33,7 +34,7 @@ public class RestAdminRestaurantController extends AbstractRestaurantController 
     @Override
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody RestaurantDTO restaurant, @PathVariable int id) {
+    public void update(@RequestBody @Valid RestaurantDTO restaurant, @PathVariable int id) {
         super.update(restaurant, id);
     }
 
@@ -45,7 +46,7 @@ public class RestAdminRestaurantController extends AbstractRestaurantController 
     }
 
     @PostMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createDishWithLocation(@RequestBody Dish dish, @PathVariable int id) {
+    public ResponseEntity<Dish> createDishWithLocation(@RequestBody @Valid Dish dish, @PathVariable int id) {
         Dish created = super.createDish(dish, id);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/" + id + "/dishes" + "/{dishId}")
@@ -70,7 +71,7 @@ public class RestAdminRestaurantController extends AbstractRestaurantController 
 
     @PutMapping(value = "/{restaurantId}/dishes/{dishId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateDish(@RequestBody Dish dish, @PathVariable int restaurantId, @PathVariable int dishId) {
+    public void updateDish(@RequestBody @Valid Dish dish, @PathVariable int restaurantId, @PathVariable int dishId) {
         //todo SoapUI, curl
         dish.setId(dishId);
         super.updateDish(dish, restaurantId);

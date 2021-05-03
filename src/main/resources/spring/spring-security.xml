@@ -6,7 +6,6 @@
 
     <http pattern="/resources/**" security="none"/>
     <http pattern="/resources/images/favicon.ico" security="none" />
-    <!--    <http pattern="/webjars/**" security="none"/>-->
 
     <http pattern="/rest/**" use-expressions="true" name="restSecurityFilterChain">
         <http-basic/>
@@ -27,12 +26,10 @@
         <intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
 
-        <form-login default-target-url="/restaurants"
-                    always-use-default-target="true"/>
+        <form-login login-page="/login" default-target-url="/restaurants"
+                    authentication-failure-url="/login?error=true"
+                    login-processing-url="/spring_security_check"/>
 
-<!--        <form-login login-page="/login" default-target-url="/restaurants"-->
-<!--                    authentication-failure-url="/login?error=true"-->
-<!--                    login-processing-url="/spring_security_check"/>-->
         <logout logout-success-url="/login"/>
         <csrf disabled="true"/>
     </http>
