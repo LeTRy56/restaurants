@@ -6,6 +6,7 @@
 
     <http pattern="/resources/**" security="none"/>
     <http pattern="/resources/images/favicon.ico" security="none" />
+    <http pattern="/webjars/**" security="none"/>
 
     <http pattern="/rest/**" use-expressions="true" name="restSecurityFilterChain">
         <http-basic/>
