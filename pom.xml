@@ -7,7 +7,7 @@
     <groupId>ru.letry</groupId>
     <artifactId>restaurants</artifactId>
     <packaging>war</packaging>
-    <version>3.7.2</version>
+    <version>3.9</version>
 
     <name>Choice of Restaurant for lunch</name>
     <url>https://restaurants.letry.ru/</url>
@@ -84,6 +84,12 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
 <!--            <scope>runtime</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!--Spring-->
@@ -244,12 +250,6 @@
                     <artifactId>tomcat-jdbc</artifactId>
                     <version>${tomcat.version}</version>
                     <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>jul-to-slf4j</artifactId>
-                    <version>${slf4j.version}</version>
-                    <scope>runtime</scope>
                 </dependency>
             </dependencies>
         </profile>
