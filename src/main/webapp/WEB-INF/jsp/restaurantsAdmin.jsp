@@ -24,7 +24,7 @@
     <p></p>
     <form method="post" action="${pageContext.request.contextPath}/admin/restaurants">
         <input type="text" name="restaurantName" value="New restaurant" minlength="2" maxlength="100" required>
-        <button type="submit">Add restaurant</button>
+        <button type="submit" class="button-simple">Add restaurant</button>
     </form>
     <br>
 
@@ -53,9 +53,9 @@
                     </c:forEach>
                 </th>
                 <th>${restaurant.votes}</th>
-                <th><a href="restaurants/${restaurant.id}/vote"><input type="button" value="Vote"></a></th>
-                <th><a href="admin/restaurants/${restaurant.id}/update"><input type="button" value="Update"></a></th>
-                <th><a href="admin/restaurants/${restaurant.id}/delete"><input type="button" value="Delete"></a></th>
+                <th><a href="restaurants/${restaurant.id}/vote" class="button-simple">Vote</a></th>
+                <th><a href="admin/restaurants/${restaurant.id}/update" class="button-orange">Update</a></th>
+                <th><a href="admin/restaurants/${restaurant.id}/delete" class="button-red">Delete</a></th>
             </tr>
             </c:forEach>
         </table>

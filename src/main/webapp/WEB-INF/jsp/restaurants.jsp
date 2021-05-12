@@ -46,7 +46,7 @@
                     </c:forEach>
                 </th>
                 <th>${restaurant.votes}</th>
-                <th><a href="restaurants/${restaurant.id}/vote"><input type="button" value="Vote"></a></th>
+                <th><a href="restaurants/${restaurant.id}/vote" class="button-simple">Vote</a></th>
             </tr>
             </c:forEach>
         </table>

@@ -21,7 +21,7 @@
     <h2>${param.action == 'create' ? 'Create restaurant' : 'Edit restaurant '}</h2>
     <form method="get" action="/admin/restaurants/${restaurant.id}/update">
         <input type="date" name="date" value="<%=date%>">
-        <button type="submit">Select</button>
+        <button type="submit" class="button-simple">Select</button>
         <p></p>
     </form>
     <form method="post" action="${pageContext.request.contextPath}/admin/restaurants">
@@ -32,7 +32,7 @@
                 <input type="text" value="${restaurant.name}" name="restaurantName" minlength="2" maxlength="100" required>
             </label>
             <p></p>
-            <a href="/admin/restaurants/${restaurant.id}/dishes/create?date=<%=date%>"><input type="button" value="Add dish"></a>
+            <a href="/admin/restaurants/${restaurant.id}/dishes/create?date=<%=date%>" class="button-simple">Add dish</a>
             <c:forEach items="${restaurant.dishes}" var="dish">
             <jsp:useBean id="dish" type="ru.letry.restaurants.model.Dish"/>
             <dl>
@@ -43,13 +43,13 @@
                     <label>
                         <input type="number" name="dishPrice${dish.id}" value="${dish.price}" min="5" max="5000" step=".01" required>
                     </label>
-                    <a href="/admin/restaurants/${restaurant.id}/dishes/${dish.id}/delete?date=<%=date%>"><input type="button" value="Delete"></a>
+                    <a href="/admin/restaurants/${restaurant.id}/dishes/${dish.id}/delete?date=<%=date%>" class="button-red">Delete</a>
                 </dd>
             </dl>
         </c:forEach>
             <p></p>
-        <button type="submit">Save</button>
-        <a href="${pageContext.request.contextPath}/restaurants"><input type="button" value="Cancel"></a>
+        <button type="submit" class="button-green">Save</button>
+        <a href="${pageContext.request.contextPath}/restaurants" class="button-simple">Cancel</a>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
